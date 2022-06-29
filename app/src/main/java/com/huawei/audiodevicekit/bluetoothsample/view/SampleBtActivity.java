@@ -3,6 +3,7 @@ package com.huawei.audiodevicekit.bluetoothsample.view;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,8 +29,14 @@ import com.huawei.audiodevicekit.bluetoothsample.presenter.SampleBtPresenter;
 import com.huawei.audiodevicekit.bluetoothsample.view.adapter.SingleChoiceAdapter;
 import com.huawei.audiodevicekit.mvp.view.support.BaseAppCompatActivity;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -258,5 +265,40 @@ public class SampleBtActivity
     protected void onDestroy() {
         super.onDestroy();
         getPresenter().deInit();
+    }
+
+    /**
+     * save the input text string to file
+     */
+    public void save() {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File file = new File(sdCard, "test.txt");
+        Toast.makeText(getContext(), sdCard.toString(), Toast.LENGTH_SHORT).show();
+        BufferedWriter writer = null;
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+            for (Map<String, String> item : maps) {
+                Iterator iter = item.keySet().iterator();
+                while (iter.hasNext()) {
+                    Object key = iter.next();
+                    Object val = item.get(key);
+                    writer.write(val.toString());
+                }
+                writer.newLine();
+            }
+            writer.flush();
+            Toast.makeText(getContext(), file.toString(), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

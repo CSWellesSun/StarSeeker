@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </LinearLayout>
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="290dp"-->
+<!--        android:layout_height="340dp"-->
+<!--        app:srcCompat="@drawable/rect_round"-->
+<!--        tools:layout_editor_absoluteX="60dp"-->
+<!--        tools:layout_editor_absoluteY="112dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView2"-->
+<!--        android:layout_width="213dp"-->
+<!--        android:layout_height="203dp"-->
+<!--        app:srcCompat="@drawable/glass"-->
+<!--        tools:layout_editor_absoluteX="99dp"-->
+<!--        tools:layout_editor_absoluteY="155dp" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Touch the glasses for more info"-->
+<!--        tools:layout_editor_absoluteX="106dp"-->
+<!--        tools:layout_editor_absoluteY="127dp" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Star Info"-->
+<!--        tools:layout_editor_absoluteX="274dp"-->
+<!--        tools:layout_editor_absoluteY="61dp" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView4"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Find Star"-->
+<!--        tools:layout_editor_absoluteX="89dp"-->
+<!--        tools:layout_editor_absoluteY="61dp" />-->
+
+    <LinearLayout
+        android:layout_height="90dp"
+        android:layout_width="match_parent"
+        android:background="#564180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:src="@drawable/icon"></ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:src="@drawable/file"></ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:src="@drawable/earth"></ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:src="@drawable/avatar"></ImageView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

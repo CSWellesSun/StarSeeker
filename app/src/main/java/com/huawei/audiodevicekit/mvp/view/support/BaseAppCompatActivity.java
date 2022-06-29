@@ -33,6 +33,7 @@ public abstract class BaseAppCompatActivity<P extends IPresenter, U extends Ui> 
         setContentView(getResId());
         initView();
         initData();
+        initTabBar();
         setOnclick();
     }
 
@@ -65,4 +66,6 @@ public abstract class BaseAppCompatActivity<P extends IPresenter, U extends Ui> 
      */
     protected void setOnclick() {
     }
+
+    protected void initTabBar() {}
 }
