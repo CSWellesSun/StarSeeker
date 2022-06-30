@@ -1,63 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="630dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- 选项 -->
+
+        <Button
+            android:id="@+id/find_star_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="60dp"
+            android:background="@drawable/new_button"
+            android:text="Find Star"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/star_info_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></Button>
+
+        <Button
+            android:id="@+id/star_info_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="72dp"
+            android:layout_weight="1"
+            android:background="@drawable/new_button"
+            android:text="Star Info"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/find_star_button"
+            app:layout_constraintTop_toTopOf="parent"></Button>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="299dp"
+            android:layout_height="252dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="56dp"
+            android:background="@drawable/rect_round"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="263dp"
+                android:layout_height="113dp"
+                android:layout_marginBottom="92dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/glass" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="51dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="51dp"
+                android:text="Touch the glasses for more info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="112dp"
+                android:layout_marginBottom="59dp"
+                android:text="Huawei glasses connected"
+                android:textColor="#887676"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="259dp"
+            android:layout_marginBottom="248dp"
+            android:text="Recommendation"
+            android:textSize="16sp"
+            android:textFontWeight="700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="131dp"
+            android:layout_height="91dp"
+            android:layout_marginStart="235dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="146dp"
+            android:background="@drawable/rect_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/recommend_2"
+                android:layout_width="119dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/moon" />
+
+            <TextView
+                android:id="@+id/recommend_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moon"
+                android:textColor="#5A5656"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="128dp"
+            android:layout_height="91dp"
+            android:layout_marginStart="58dp"
+            android:layout_marginEnd="225dp"
+            android:layout_marginBottom="146dp"
+            android:background="@drawable/rect_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/recommend_1"
+                android:layout_width="119dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/polaris" />
+
+            <TextView
+                android:id="@+id/recommend_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Polaris"
+                android:textColor="#5A5656"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="131dp"
+            android:layout_height="91dp"
+            android:layout_marginStart="235dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="29dp"
+            android:background="@drawable/rect_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/recommend_4"
+                android:layout_width="119dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/libra" />
+
+            <TextView
+                android:id="@+id/recommend_text_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Libra"
+                android:textColor="#5A5656"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="131dp"
+            android:layout_height="91dp"
+            android:layout_marginStart="58dp"
+            android:layout_marginEnd="225dp"
+            android:layout_marginBottom="29dp"
+            android:background="@drawable/rect_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/recommend_3"
+                android:layout_width="116dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/red_lightning" />
+
+            <TextView
+                android:id="@+id/recommend_text_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Red Lightning"
+                android:textColor="#5A5656"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-    </LinearLayout>
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView"-->
-<!--        android:layout_width="290dp"-->
-<!--        android:layout_height="340dp"-->
-<!--        app:srcCompat="@drawable/rect_round"-->
-<!--        tools:layout_editor_absoluteX="60dp"-->
-<!--        tools:layout_editor_absoluteY="112dp" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView2"-->
-<!--        android:layout_width="213dp"-->
-<!--        android:layout_height="203dp"-->
-<!--        app:srcCompat="@drawable/glass"-->
-<!--        tools:layout_editor_absoluteX="99dp"-->
-<!--        tools:layout_editor_absoluteY="155dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Touch the glasses for more info"-->
-<!--        tools:layout_editor_absoluteX="106dp"-->
-<!--        tools:layout_editor_absoluteY="127dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView3"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Star Info"-->
-<!--        tools:layout_editor_absoluteX="274dp"-->
-<!--        tools:layout_editor_absoluteY="61dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView4"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Find Star"-->
-<!--        tools:layout_editor_absoluteX="89dp"-->
-<!--        tools:layout_editor_absoluteY="61dp" />-->
-
-    <LinearLayout
-        android:layout_height="90dp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
         android:background="#564180"
         app:layout_constraintBottom_toBottomOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:layout_width="0dp"
@@ -81,7 +280,9 @@
             android:layout_weight="1"
             android:scaleX="0.6"
             android:scaleY="0.6"
-            android:src="@drawable/earth"></ImageView>
+            android:src="@drawable/earth"
+            tools:layout_editor_absoluteX="81dp"
+            tools:layout_editor_absoluteY="0dp"></ImageView>
 
         <ImageView
             android:layout_width="0dp"
@@ -89,7 +290,9 @@
             android:layout_weight="1"
             android:scaleX="0.6"
             android:scaleY="0.6"
-            android:src="@drawable/avatar"></ImageView>
+            android:src="@drawable/avatar"
+            tools:layout_editor_absoluteX="245dp"
+            tools:layout_editor_absoluteY="0dp"></ImageView>
 
     </LinearLayout>
 

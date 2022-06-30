@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 
 import com.huawei.audiobluetooth.api.AudioBluetoothApi;
+//import com.huawei.audiobluetooth.api.data.Data;
 import com.huawei.audiobluetooth.api.data.SensorData;
 import com.huawei.audiobluetooth.api.data.SensorDataHelper;
 import com.huawei.audiobluetooth.constant.ConnectState;
