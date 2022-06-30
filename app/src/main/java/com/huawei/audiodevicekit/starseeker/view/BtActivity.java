@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -160,7 +161,13 @@ public class BtActivity
                 CheckGlassConnection();
             }
         });
-
+        // 对Edit Text的监听
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                Toast.makeText(getApplicationContext(),"输入的为:"+input.getText().toString(),Toast.LENGTH_LONG).show();
+                return false;}});
+        // 对北极星语音播报的监听
         btnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,6 +176,7 @@ public class BtActivity
                 startActivity(intent);
             }
         });
+        // 对语音查找的监听
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
