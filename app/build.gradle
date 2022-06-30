@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.huawei.audiodevicekit"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
@@ -40,4 +40,5 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.0"
     implementation "androidx.recyclerview:recyclerview:1.2.0"
+    implementation 'com.android.support:multidex:1.0.0'
 }

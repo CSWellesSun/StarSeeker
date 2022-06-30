@@ -1,29 +1,47 @@
 package com.huawei.audiodevicekit.starseeker.view;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
 import com.huawei.audiodevicekit.R;
 import com.huawei.audiodevicekit.bluetoothsample.contract.SampleBtContract;
+import com.huawei.audiodevicekit.bluetoothsample.view.SampleBtActivity;
 import com.huawei.audiodevicekit.mvp.view.support.BaseAppCompatActivity;
 import com.huawei.audiodevicekit.starseeker.contract.BtContract;
 import com.huawei.audiodevicekit.starseeker.presenter.BtPresenter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BtActivity
     extends BaseAppCompatActivity<BtContract.Presenter, BtContract.View>
     implements BtContract.View {
-    private Button btnConnect;
+    private ImageView btnConnect;
 
     private String mMac;
 
     private TextView connectStatus;
+
+    private boolean connectStatusFlag = false;
+
+    private Set<String> deviceMacSet;
+
+    private Set<String> glassMacSet;
 
     @Override
     public Context getContext() { return this; }
@@ -39,6 +57,70 @@ public class BtActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 检查是否连接蓝牙
+        boolean res = CheckCurrentBlueTooth();
+        if (res) {
+            // 检查是否连接上华为眼镜
+            getPresenter().search();
+            Toast.makeText(this, "当前连接着的：", Toast.LENGTH_SHORT).show();
+            for (String mac : deviceMacSet) {
+                Toast.makeText(this, mac, Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(this, "当前搜索到的：", Toast.LENGTH_SHORT).show();
+            for (String mac : glassMacSet) {
+                Toast.makeText(this, mac, Toast.LENGTH_SHORT).show();
+            }
+            for (String mac : deviceMacSet) {
+                for (String glassMac : glassMacSet) {
+                    if (mac.equals(glassMac)) {
+                        mMac = mac;
+                        connectStatusFlag = true;
+                        runOnUiThread(() -> connectStatus.setText("已连接华为眼镜"));
+                        return;
+                    }
+                }
+            }
+            runOnUiThread(() -> connectStatus.setText("未连接华为眼镜"));
+        } else {
+            runOnUiThread(() -> connectStatus.setText("未连接蓝牙"));
+        }
+    }
+
+    private boolean CheckCurrentBlueTooth() {
+        deviceMacSet.clear();
+        boolean flag = false;
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            return false;
+        }
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            // There are paired devices. Get the name and address of each paired device.
+            Method isConnectedMethod = null;
+            boolean isConnected = false;
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress(); // MAC address
+                try {
+                    isConnectedMethod = BluetoothDevice.class.getDeclaredMethod("isConnected", (Class[]) null);
+                    isConnectedMethod.setAccessible(true);
+                    isConnected = (boolean) isConnectedMethod.invoke(device, (Object[]) null);
+                    if (isConnected) {
+                        deviceMacSet.add(device.getAddress());
+                        flag = true;
+                        Toast.makeText(this, device.getAddress(), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NoSuchMethodException e) {
+                    isConnected = false;
+                } catch (IllegalAccessException e) {
+                    isConnected = false;
+                } catch (InvocationTargetException e) {
+                    isConnected = false;
+                }
+            }
+        }
+        return flag;
     }
 
     @Override
@@ -48,9 +130,11 @@ public class BtActivity
 
     @Override
     protected void initView() {
-//        btnConnect = findViewById(R.id.m_button_connect);
-//        connectStatus = findViewById(R.id.m_connect_status);
+        btnConnect = (ImageView) findViewById(R.id.glass_connect);
+        connectStatus = (TextView) findViewById(R.id.m_connect_status);
 
+        deviceMacSet = new HashSet();
+        glassMacSet = new HashSet<>();
     }
 
     @Override
@@ -66,13 +150,36 @@ public class BtActivity
     @Override
     protected void setOnclick() {
         super.setOnclick();
-//        btnConnect.setOnClickListener(v -> getPresenter().test_connection());
+        btnConnect.setOnClickListener(v -> getPresenter().search());
     }
 
+    // 从P来的回调函数
     @Override
     public void onConnectStateChanged(String stateInfo) {
         if (connectStatus != null) {
             runOnUiThread(() -> connectStatus.setText(stateInfo));
+        }
+    }
+
+    @Override
+    public void onDeviceFound(String mac) {
+        glassMacSet.add(mac);
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+        runOnUiThread(
+                () -> Toast.makeText(BtActivity.this, errorMsg, Toast.LENGTH_LONG).show());
+    }
+
+    @Override
+    public void onCheckGlassConnect(String mac, boolean res) {
+        if (res) {
+            mMac = mac;
+            runOnUiThread(() -> connectStatus.setText("当前已连接华为眼镜"));
+            connectStatusFlag = true;
+        } else if (connectStatusFlag == false) {
+            runOnUiThread(() -> connectStatus.setText("当前未连接华为眼镜"));
         }
     }
 }
