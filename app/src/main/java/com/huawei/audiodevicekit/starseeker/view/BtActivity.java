@@ -6,6 +6,7 @@ import android.content.Context;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,19 +59,15 @@ public class BtActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        CheckGlassConnection();
+    }
+
+    public void CheckGlassConnection() {
         // 检查是否连接蓝牙
         boolean res = CheckCurrentBlueTooth();
         if (res) {
             // 检查是否连接上华为眼镜
             getPresenter().search();
-            Toast.makeText(this, "当前连接着的：", Toast.LENGTH_SHORT).show();
-            for (String mac : deviceMacSet) {
-                Toast.makeText(this, mac, Toast.LENGTH_SHORT).show();
-            }
-            Toast.makeText(this, "当前搜索到的：", Toast.LENGTH_SHORT).show();
-            for (String mac : glassMacSet) {
-                Toast.makeText(this, mac, Toast.LENGTH_SHORT).show();
-            }
             for (String mac : deviceMacSet) {
                 for (String glassMac : glassMacSet) {
                     if (mac.equals(glassMac)) {
@@ -87,7 +84,7 @@ public class BtActivity
         }
     }
 
-    private boolean CheckCurrentBlueTooth() {
+    protected boolean CheckCurrentBlueTooth() {
         deviceMacSet.clear();
         boolean flag = false;
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -100,8 +97,6 @@ public class BtActivity
             Method isConnectedMethod = null;
             boolean isConnected = false;
             for (BluetoothDevice device : pairedDevices) {
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
                 try {
                     isConnectedMethod = BluetoothDevice.class.getDeclaredMethod("isConnected", (Class[]) null);
                     isConnectedMethod.setAccessible(true);
@@ -109,7 +104,6 @@ public class BtActivity
                     if (isConnected) {
                         deviceMacSet.add(device.getAddress());
                         flag = true;
-                        Toast.makeText(this, device.getAddress(), Toast.LENGTH_SHORT).show();
                     }
                 } catch (NoSuchMethodException e) {
                     isConnected = false;
@@ -150,7 +144,12 @@ public class BtActivity
     @Override
     protected void setOnclick() {
         super.setOnclick();
-        btnConnect.setOnClickListener(v -> getPresenter().search());
+        btnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckGlassConnection();
+            }
+        });
     }
 
     // 从P来的回调函数
