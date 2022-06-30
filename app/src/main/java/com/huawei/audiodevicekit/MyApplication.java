@@ -11,6 +11,11 @@ import androidx.multidex.MultiDex;
 import com.huawei.audiobluetooth.utils.ContextUtils;
 import com.huawei.audiobluetooth.utils.LogUtils;
 
+import android.app.Application;
+
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
+
 /**
  * 应用入口
  *
@@ -22,6 +27,7 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+        SpeechUtility.createUtility(MyApplication.this, SpeechConstant.APPID +"=f46c878f");
         super.onCreate();
         init();
     }

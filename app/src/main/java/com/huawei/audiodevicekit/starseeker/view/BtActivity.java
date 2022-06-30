@@ -3,12 +3,12 @@ package com.huawei.audiodevicekit.starseeker.view;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,12 +34,12 @@ public class BtActivity
     extends BaseAppCompatActivity<BtContract.Presenter, BtContract.View>
     implements BtContract.View {
     private ImageView btnConnect;
+    private ImageView btnStar;
+    private Button btnSearch;
 
     private String mMac;
 
     private TextView connectStatus;
-
-    private EditText input;
 
     private boolean connectStatusFlag = false;
 
@@ -70,7 +70,6 @@ public class BtActivity
         boolean res = CheckCurrentBlueTooth();
         if (res) {
             // 检查是否连接上华为眼镜
-            glassMacSet.clear();
             getPresenter().search();
             for (String mac : deviceMacSet) {
                 for (String glassMac : glassMacSet) {
@@ -130,7 +129,8 @@ public class BtActivity
     protected void initView() {
         btnConnect = (ImageView) findViewById(R.id.glass_connect);
         connectStatus = (TextView) findViewById(R.id.m_connect_status);
-        input = (EditText) findViewById(R.id.search_edit_text);
+        btnStar =(ImageView)findViewById(R.id.recommend_1);
+        btnSearch =(Button) findViewById(R.id.find_star_button);
 
         deviceMacSet = new HashSet();
         glassMacSet = new HashSet<>();
@@ -149,15 +149,29 @@ public class BtActivity
     @Override
     protected void setOnclick() {
         super.setOnclick();
-        // 点击眼镜开始connect
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckGlassConnection();
             }
         });
-        // 对Edit Text的监听
-        
+
+        btnStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(BtActivity.this,com.huawei.audiodevicekit.MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(BtActivity.this,com.huawei.audiodevicekit.MainActivity2.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // 从P来的回调函数
