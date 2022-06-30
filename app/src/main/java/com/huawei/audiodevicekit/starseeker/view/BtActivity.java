@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class BtActivity
 
     private TextView connectStatus;
 
+    private EditText input;
+
     private boolean connectStatusFlag = false;
 
     private Set<String> deviceMacSet;
@@ -67,6 +70,7 @@ public class BtActivity
         boolean res = CheckCurrentBlueTooth();
         if (res) {
             // 检查是否连接上华为眼镜
+            glassMacSet.clear();
             getPresenter().search();
             for (String mac : deviceMacSet) {
                 for (String glassMac : glassMacSet) {
@@ -126,6 +130,7 @@ public class BtActivity
     protected void initView() {
         btnConnect = (ImageView) findViewById(R.id.glass_connect);
         connectStatus = (TextView) findViewById(R.id.m_connect_status);
+        input = (EditText) findViewById(R.id.search_edit_text);
 
         deviceMacSet = new HashSet();
         glassMacSet = new HashSet<>();
@@ -144,12 +149,15 @@ public class BtActivity
     @Override
     protected void setOnclick() {
         super.setOnclick();
+        // 点击眼镜开始connect
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckGlassConnection();
             }
         });
+        // 对Edit Text的监听
+        
     }
 
     // 从P来的回调函数
