@@ -6,6 +6,7 @@ import android.content.Context;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -157,7 +158,13 @@ public class BtActivity
             }
         });
         // 对Edit Text的监听
-        
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                Toast.makeText(getApplicationContext(),"输入的为:"+input.getText().toString(),Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
     }
 
     // 从P来的回调函数
