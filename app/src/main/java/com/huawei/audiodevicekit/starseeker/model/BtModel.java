@@ -1,5 +1,6 @@
 package com.huawei.audiodevicekit.starseeker.model;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 
 import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
@@ -12,11 +13,15 @@ public interface BtModel extends Model {
         void onDeviceFound(String mac);
 
         void onCheckGlassConnect(String mac, boolean res);
+
+        void onConnectStateChanged(BluetoothDevice deviceInfo, int state);
     }
 
     void initBluetooth(Context context);
 
     void search();
+
+    void connect(String mac);
 
     void checkGlassConnect(Set<String> macs);
 }

@@ -84,12 +84,31 @@
                 android:id="@+id/find_this_star"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/find_button"
+                android:background="@drawable/find_end_button"
+                android:layout_marginTop="440dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_broadcast"></ImageView>
+                app:layout_constraintTop_toTopOf="parent">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/find_end_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Find The Star"
+                android:textColor="#495B69"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/find_this_star"
+                app:layout_constraintEnd_toEndOf="@+id/find_this_star"
+                app:layout_constraintTop_toTopOf="@+id/find_this_star"
+                app:layout_constraintBottom_toBottomOf="@+id/find_this_star"
+                />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,9 +12,10 @@
         android:layout_width="0dp"
         android:layout_height="630dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        tools:context=".starseeker.view.VoiceRecognition"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <!-- 选项 -->
 
@@ -133,8 +134,6 @@
             android:src="@drawable/search"
             tools:layout_editor_absoluteX="81dp"
             tools:layout_editor_absoluteY="0dp"></ImageView>
-
-
 
     </LinearLayout>
 
