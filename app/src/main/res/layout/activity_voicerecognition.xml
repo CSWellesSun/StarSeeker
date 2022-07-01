@@ -4,44 +4,188 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context=".VoiceRecognition">
-
-    <EditText
-        android:id="@+id/edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="请点击开始录音"
+    tools:context=".starseeker.view.Broadcast">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="630dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开始录音"
-        app:layout_constraintEnd_toStartOf="@+id/edittext"
-        app:layout_constraintTop_toTopOf="@+id/btn_stop" />
+        <!-- 选项 -->
 
-    <Button
-        android:id="@+id/btn_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:text="停止录音"
-        app:layout_constraintStart_toEndOf="@+id/edittext"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/find_star_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="60dp"
+            android:background="@drawable/new_button"
+            android:text="Find Star"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/star_info_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></Button>
 
-    <Button
-        android:id="@+id/btn_jump1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="516dp"
-        android:text="跳转"
-        app:layout_constraintStart_toEndOf="@+id/edittext"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/star_info_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="72dp"
+            android:layout_weight="1"
+            android:background="@drawable/new_button_selected"
+            android:text="Star Info"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/find_star_button"
+            app:layout_constraintTop_toTopOf="parent"></Button>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginEnd="56dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/find_star_button"
+            android:background="@drawable/text_broadcast"
+            >
+
+
+            <TextView
+                android:id="@+id/current_input_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前输入的内容:"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="360dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                ></TextView>
+
+            <TextView
+                android:id="@+id/edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/current_input_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/tabbar0"
+        android:layout_width="0dp"
+        android:layout_height="350dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_start"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/broadcast_begin"></ImageView>
+
+        <ImageView
+            android:id="@+id/btn_stop"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/broadcast_stop"></ImageView>
+
+        <ImageView
+            android:id="@+id/btn_jump1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.8"
+            android:src="@drawable/search"
+            tools:layout_editor_absoluteX="81dp"
+            tools:layout_editor_absoluteY="0dp"></ImageView>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tabbar"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="#564180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/icon"></ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/file"></ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/earth"
+            tools:layout_editor_absoluteX="81dp"
+            tools:layout_editor_absoluteY="0dp"></ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/avatar"
+            tools:layout_editor_absoluteX="245dp"
+            tools:layout_editor_absoluteY="0dp"></ImageView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

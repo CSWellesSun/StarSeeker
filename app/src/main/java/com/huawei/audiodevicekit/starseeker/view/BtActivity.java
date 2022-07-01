@@ -8,24 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.huawei.audiodevicekit.Broadcast;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
-import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
-import com.huawei.audiobluetooth.utils.LogUtils;
 import com.huawei.audiodevicekit.R;
-import com.huawei.audiodevicekit.VoiceRecognition;
 import com.huawei.audiodevicekit.mvp.view.support.BaseAppCompatActivity;
 import com.huawei.audiodevicekit.starseeker.contract.BtContract;
 import com.huawei.audiodevicekit.starseeker.presenter.BtPresenter;

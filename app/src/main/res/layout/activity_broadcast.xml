@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context=".Broadcast">
+    tools:context=".starseeker.view.Broadcast">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
@@ -55,53 +55,41 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_marginStart="56dp"
-            android:layout_marginEnd="56dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/find_star_button"
             >\
 
-            <Button
-                android:id="@+id/btn_pause"
-                android:layout_width="22dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="170dp"
-                android:layout_marginTop="186dp"
-                android:background="@drawable/stop"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></Button>
 
             <ImageView
                 android:id="@+id/btn_broadcast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:scaleX="1.0"
-                android:scaleY="1.0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/picture" />
+
+            <ImageView
+                android:id="@+id/btn_read"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toTopOf="@+id/find_this_star"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
 
             <ImageView
                 android:id="@+id/find_this_star"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/find_button"
-                android:layout_marginTop="440dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageView>
+                app:layout_constraintBottom_toBottomOf="@+id/btn_broadcast"></ImageView>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

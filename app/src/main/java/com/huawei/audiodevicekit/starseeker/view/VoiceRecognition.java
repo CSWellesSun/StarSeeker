@@ -1,12 +1,12 @@
-package com.huawei.audiodevicekit;
+package com.huawei.audiodevicekit.starseeker.view;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,6 +16,7 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+import com.huawei.audiodevicekit.R;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -23,10 +24,10 @@ import java.util.regex.Pattern;
 
 
 public class VoiceRecognition extends AppCompatActivity implements EventListener {
-    protected EditText txtResult;//识别结果
-    protected Button startBtn;//开始识别，持续一定时间不说话会自动停止，需要再次打开
-    protected Button stopBtn;//停止识别,立即停止，直接输出已经识别的内容
-    protected Button jumpBtn;
+    protected TextView txtResult;//识别结果
+    protected ImageView startBtn;//开始识别，持续一定时间不说话会自动停止，需要再次打开
+    protected ImageView stopBtn;//停止识别,立即停止，直接输出已经识别的内容
+    protected ImageView jumpBtn;
 
     private EventManager asr;//语音识别核心库
 
@@ -86,10 +87,10 @@ public class VoiceRecognition extends AppCompatActivity implements EventListener
      * 初始化控件
      */
     private void initView() {
-        txtResult = (EditText) findViewById(R.id.edittext);
-        startBtn = (Button) findViewById(R.id.btn_start);
-        stopBtn = (Button) findViewById(R.id.btn_stop);
-        jumpBtn = (Button) findViewById(R.id.btn_jump1);
+        txtResult = (TextView) findViewById(R.id.edittext);
+        startBtn = (ImageView) findViewById(R.id.btn_start);
+        stopBtn = (ImageView) findViewById(R.id.btn_stop);
+        jumpBtn = (ImageView) findViewById(R.id.btn_jump1);
         startBtn.setOnClickListener(new View.OnClickListener() {//点击开始按钮
             @Override
             public void onClick(View v) {

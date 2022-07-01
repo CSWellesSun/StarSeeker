@@ -1,4 +1,4 @@
-package com.huawei.audiodevicekit;
+package com.huawei.audiodevicekit.starseeker.view;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.huawei.audiodevicekit.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -95,9 +96,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
      */
     private void initView() {
 //        etText = findViewById(R.id.et_text);
-        findViewById(R.id.btn_broadcast).setOnClickListener(this);
+        findViewById(R.id.btn_read).setOnClickListener(this);
 //        findViewById(R.id.btn_cancel).setOnClickListener(this);
-        findViewById(R.id.btn_pause).setOnClickListener(this);
+        findViewById(R.id.find_this_star).setOnClickListener(this);
 //        findViewById(R.id.btn_resume).setOnClickListener(this);
 //        findViewById(R.id.btn_jump).setOnClickListener(this);
 //        Spinner spinner = findViewById(R.id.spinner);
@@ -215,11 +216,13 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
 
         switch (v.getId()) {
-//            case R.id.btn_jump:
+            case R.id.find_this_star:
+                mTts.pauseSpeaking();
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this,MainActivity2.class);
 //                startActivity(intent);
-            case R.id.btn_broadcast://开始合成
+                break;
+            case R.id.btn_read://开始合成
                 //输入文本
 //                String etStr = etText.getText().toString().trim();
 //                if (!etStr.isEmpty()) {
@@ -236,9 +239,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 //            case R.id.btn_cancel://取消合成
 //                mTts.stopSpeaking();
 //                break;
-            case R.id.btn_pause://暂停播放
-                mTts.pauseSpeaking();
-                break;
+//            case R.id.btn_pause://暂停播放
+//                mTts.pauseSpeaking();
+//                break;
 //            case R.id.btn_resume://继续播放
 //                mTts.resumeSpeaking();
 //                break;
