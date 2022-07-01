@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- 选项 -->
+
         <Button
             android:id="@+id/find_star_button"
             android:layout_width="wrap_content"
@@ -60,17 +61,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/find_star_button"
-            >
+            >\
+
+            <Button
+                android:id="@+id/btn_pause"
+                android:layout_width="22dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="170dp"
+                android:layout_marginTop="186dp"
+                android:background="@drawable/stop"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></Button>
 
             <ImageView
-                android:id="@+id/glass_connect"
+                android:id="@+id/btn_broadcast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="16dp"
                 android:scaleX="1.0"
                 android:scaleY="1.0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/picture" />
 
             <ImageView

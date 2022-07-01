@@ -81,13 +81,13 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
 
-//        //初始化
-//        initView();
-//        //请求权限
-//        requestPermissions();
-//
-//        // 初始化合成对象
-//        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+        //初始化
+        initView();
+        //请求权限
+        requestPermissions();
+
+        // 初始化合成对象
+        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
     }
 
     /**
@@ -95,20 +95,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
      */
     private void initView() {
 //        etText = findViewById(R.id.et_text);
-        String etStr = etText.getText().toString().trim();
-        if (!etStr.isEmpty()) {
-            text = etStr;
-        }
-        //设置参数
-        setParam();
-        //开始合成播放
-        int code = mTts.startSpeaking(text, mTtsListener);
-        if (code != ErrorCode.SUCCESS) {
-            showTip("语音合成失败,错误码: " + code);
-        }
-//        findViewById(R.id.btn_play).setOnClickListener(this);
+        findViewById(R.id.btn_broadcast).setOnClickListener(this);
 //        findViewById(R.id.btn_cancel).setOnClickListener(this);
-//        findViewById(R.id.btn_pause).setOnClickListener(this);
+        findViewById(R.id.btn_pause).setOnClickListener(this);
 //        findViewById(R.id.btn_resume).setOnClickListener(this);
 //        findViewById(R.id.btn_jump).setOnClickListener(this);
 //        Spinner spinner = findViewById(R.id.spinner);
@@ -230,26 +219,26 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this,MainActivity2.class);
 //                startActivity(intent);
-//            case R.id.btn_play://开始合成
-//                //输入文本
+            case R.id.btn_broadcast://开始合成
+                //输入文本
 //                String etStr = etText.getText().toString().trim();
 //                if (!etStr.isEmpty()) {
 //                    text = etStr;
 //                }
-//                //设置参数
-//                setParam();
-//                //开始合成播放
-//                int code = mTts.startSpeaking(text, mTtsListener);
-//                if (code != ErrorCode.SUCCESS) {
-//                    showTip("语音合成失败,错误码: " + code);
-//                }
-//                break;
+                //设置参数
+                setParam();
+                //开始合成播放
+                int code = mTts.startSpeaking(text, mTtsListener);
+                if (code != ErrorCode.SUCCESS) {
+                    showTip("语音合成失败,错误码: " + code);
+                }
+                break;
 //            case R.id.btn_cancel://取消合成
 //                mTts.stopSpeaking();
 //                break;
-//            case R.id.btn_pause://暂停播放
-//                mTts.pauseSpeaking();
-//                break;
+            case R.id.btn_pause://暂停播放
+                mTts.pauseSpeaking();
+                break;
 //            case R.id.btn_resume://继续播放
 //                mTts.resumeSpeaking();
 //                break;
