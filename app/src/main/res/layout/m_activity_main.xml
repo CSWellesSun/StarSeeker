@@ -125,6 +125,7 @@
                     ></EditText>
 
                 <ImageView
+                    android:id="@+id/search_star"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     app:layout_constraintStart_toEndOf="@+id/search_edit_text"

@@ -1,7 +1,6 @@
 package com.huawei.audiodevicekit;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -34,7 +33,7 @@ import com.iflytek.cloud.msc.util.log.DebugLog;
 
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, Spinner.OnItemSelectedListener {
+public class Broadcast extends AppCompatActivity implements View.OnClickListener, Spinner.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main0);
+        setContentView(R.layout.activity_broadcast);
 
         //初始化
         initView();
@@ -96,9 +95,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void initView() {
         etText = findViewById(R.id.et_text);
-        findViewById(R.id.btn_play).setOnClickListener(this);
+        String etStr = etText.getText().toString().trim();
+        if (!etStr.isEmpty()) {
+            text = etStr;
+        }
+        //设置参数
+        setParam();
+        //开始合成播放
+        int code = mTts.startSpeaking(text, mTtsListener);
+        if (code != ErrorCode.SUCCESS) {
+            showTip("语音合成失败,错误码: " + code);
+        }
+//        findViewById(R.id.btn_play).setOnClickListener(this);
 //        findViewById(R.id.btn_cancel).setOnClickListener(this);
-//        findViewById(R.id.btn_pause).setOnClickListener(this);
+        findViewById(R.id.btn_pause).setOnClickListener(this);
 //        findViewById(R.id.btn_resume).setOnClickListener(this);
         findViewById(R.id.btn_jump).setOnClickListener(this);
 //        Spinner spinner = findViewById(R.id.spinner);
@@ -220,26 +230,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this,MainActivity2.class);
 //                startActivity(intent);
-            case R.id.btn_play://开始合成
-                //输入文本
-                String etStr = etText.getText().toString().trim();
-                if (!etStr.isEmpty()) {
-                    text = etStr;
-                }
-                //设置参数
-                setParam();
-                //开始合成播放
-                int code = mTts.startSpeaking(text, mTtsListener);
-                if (code != ErrorCode.SUCCESS) {
-                    showTip("语音合成失败,错误码: " + code);
-                }
-                break;
+//            case R.id.btn_play://开始合成
+//                //输入文本
+//                String etStr = etText.getText().toString().trim();
+//                if (!etStr.isEmpty()) {
+//                    text = etStr;
+//                }
+//                //设置参数
+//                setParam();
+//                //开始合成播放
+//                int code = mTts.startSpeaking(text, mTtsListener);
+//                if (code != ErrorCode.SUCCESS) {
+//                    showTip("语音合成失败,错误码: " + code);
+//                }
+//                break;
 //            case R.id.btn_cancel://取消合成
 //                mTts.stopSpeaking();
 //                break;
-//            case R.id.btn_pause://暂停播放
-//                mTts.pauseSpeaking();
-//                break;
+            case R.id.btn_pause://暂停播放
+                mTts.pauseSpeaking();
+                break;
 //            case R.id.btn_resume://继续播放
 //                mTts.resumeSpeaking();
 //                break;
