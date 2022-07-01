@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.MemoryFile;
+import android.os.StrictMode;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
@@ -89,6 +90,13 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 
         // 初始化合成对象
         mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads().detectDiskWrites().detectNetwork()
+                .penaltyLog().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath()
+                .build());
     }
 
     /**
@@ -218,9 +226,15 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.find_this_star:
                 mTts.pauseSpeaking();
+                LoginServer server = new LoginServer();
+                server.startNetThread();
+//                server.doPostOrGet("1","1","1","1","1");
+//                server.loginByGet("1","1","1","1","1");
+
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this,MainActivity2.class);
 //                startActivity(intent);
+
                 break;
             case R.id.btn_read://开始合成
                 //输入文本
@@ -391,4 +405,6 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
+
+
 }

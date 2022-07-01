@@ -25,8 +25,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!--外存储读权限，构建语法需要用到此权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
   <application
           android:name=".MyApplication"
           android:allowBackup="true"
@@ -50,7 +50,8 @@
               <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
     </activity>
-      <activity android:name=".starseeker.view.Broadcast"></activity>
+      <activity android:name=".starseeker.view.Broadcast"
+          android:usesCleartextTraffic="true"></activity>
       <activity android:name=".starseeker.view.VoiceRecognition"></activity>
   </application>
 
