@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.huawei.audiodevicekit"
         minSdkVersion 23
@@ -38,10 +38,6 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
-    }
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
     }
 }
 

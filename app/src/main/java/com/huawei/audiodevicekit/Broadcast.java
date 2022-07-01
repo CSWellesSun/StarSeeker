@@ -81,20 +81,20 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
 
-        //初始化
-        initView();
-        //请求权限
-        requestPermissions();
-
-        // 初始化合成对象
-        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+//        //初始化
+//        initView();
+//        //请求权限
+//        requestPermissions();
+//
+//        // 初始化合成对象
+//        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
     }
 
     /**
      * 初始化页面
      */
     private void initView() {
-        etText = findViewById(R.id.et_text);
+//        etText = findViewById(R.id.et_text);
         String etStr = etText.getText().toString().trim();
         if (!etStr.isEmpty()) {
             text = etStr;
@@ -108,9 +108,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
 //        findViewById(R.id.btn_play).setOnClickListener(this);
 //        findViewById(R.id.btn_cancel).setOnClickListener(this);
-        findViewById(R.id.btn_pause).setOnClickListener(this);
+//        findViewById(R.id.btn_pause).setOnClickListener(this);
 //        findViewById(R.id.btn_resume).setOnClickListener(this);
-        findViewById(R.id.btn_jump).setOnClickListener(this);
+//        findViewById(R.id.btn_jump).setOnClickListener(this);
 //        Spinner spinner = findViewById(R.id.spinner);
 //
 //        SeekBar sbSpeed = findViewById(R.id.sb_speed);
@@ -226,7 +226,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
 
         switch (v.getId()) {
-            case R.id.btn_jump:
+//            case R.id.btn_jump:
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this,MainActivity2.class);
 //                startActivity(intent);
@@ -247,9 +247,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 //            case R.id.btn_cancel://取消合成
 //                mTts.stopSpeaking();
 //                break;
-            case R.id.btn_pause://暂停播放
-                mTts.pauseSpeaking();
-                break;
+//            case R.id.btn_pause://暂停播放
+//                mTts.pauseSpeaking();
+//                break;
 //            case R.id.btn_resume://继续播放
 //                mTts.resumeSpeaking();
 //                break;
