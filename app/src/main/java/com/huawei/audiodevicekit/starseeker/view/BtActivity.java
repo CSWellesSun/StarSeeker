@@ -1,9 +1,13 @@
 package com.huawei.audiodevicekit.starseeker.view;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
+import com.huawei.audiobluetooth.utils.LogUtils;
 import com.huawei.audiodevicekit.R;
 import com.huawei.audiodevicekit.bluetoothsample.contract.SampleBtContract;
 import com.huawei.audiodevicekit.bluetoothsample.view.SampleBtActivity;
@@ -35,7 +41,6 @@ import java.util.Set;
 public class BtActivity
     extends BaseAppCompatActivity<BtContract.Presenter, BtContract.View>
     implements BtContract.View {
-    private ImageView btnConnect;
     private ImageView btnStar;
     private Button btnSearch;
 
@@ -50,6 +55,18 @@ public class BtActivity
     private Set<String> deviceMacSet;
 
     private Set<String> glassMacSet;
+
+    // 蓝牙状态监听
+    private BluetoothStateBroadcastReceive mReceive;
+    private IntentFilter bluetoothIntentFilter;
+
+    /**
+     * 位置权限
+     */
+    private String[] locationPermission = {"android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.ACCESS_FINE_LOCATION"};
+
+    private int LOCATION_PERMISSION_REQUEST_CODE = 188;
 
     @Override
     public Context getContext() { return this; }
@@ -67,6 +84,7 @@ public class BtActivity
         super.onCreate(savedInstanceState);
 
         CheckGlassConnection();
+        registerBluetoothReceiver();
     }
 
     public void CheckGlassConnection() {
@@ -75,6 +93,14 @@ public class BtActivity
         if (res) {
             // 检查是否连接上华为眼镜
             glassMacSet.clear();
+            // 检查位置权限
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat
+                        .requestPermissions(this, locationPermission, LOCATION_PERMISSION_REQUEST_CODE);
+            }
             getPresenter().search();
             for (String mac : deviceMacSet) {
                 for (String glassMac : glassMacSet) {
@@ -86,8 +112,10 @@ public class BtActivity
                     }
                 }
             }
+            connectStatusFlag = false;
             runOnUiThread(() -> connectStatus.setText("未连接华为眼镜"));
         } else {
+            connectStatusFlag = false;
             runOnUiThread(() -> connectStatus.setText("未连接蓝牙"));
         }
     }
@@ -132,7 +160,6 @@ public class BtActivity
 
     @Override
     protected void initView() {
-        btnConnect = (ImageView) findViewById(R.id.glass_connect);
         connectStatus = (TextView) findViewById(R.id.m_connect_status);
         btnStar =(ImageView)findViewById(R.id.recommend_1);
         btnSearch =(Button) findViewById(R.id.find_star_button);
@@ -155,12 +182,6 @@ public class BtActivity
     @Override
     protected void setOnclick() {
         super.setOnclick();
-        btnConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckGlassConnection();
-            }
-        });
         // 对Edit Text的监听
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -207,6 +228,12 @@ public class BtActivity
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterBluetoothReceiver();
+    }
+
+    @Override
     public void onCheckGlassConnect(String mac, boolean res) {
         if (res) {
             mMac = mac;
@@ -214,6 +241,56 @@ public class BtActivity
             connectStatusFlag = true;
         } else if (connectStatusFlag == false) {
             runOnUiThread(() -> connectStatus.setText("当前未连接华为眼镜"));
+        }
+    }
+
+    // 蓝牙监听
+    class BluetoothStateBroadcastReceive extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            CheckGlassConnection();
+//            String action = intent.getAction();
+//            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//            switch (action){
+//                case BluetoothDevice.ACTION_ACL_CONNECTED:
+//                    Toast.makeText(context , "蓝牙设备:" + device.getName() + "已链接", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+//                    Toast.makeText(context , "蓝牙设备:" + device.getName() + "已断开", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case BluetoothAdapter.ACTION_STATE_CHANGED:
+//                    int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
+//                    switch (blueState){
+//                        case BluetoothAdapter.STATE_OFF:
+//                            Toast.makeText(context , "蓝牙已关闭", Toast.LENGTH_SHORT).show();
+//                            break;
+//                        case BluetoothAdapter.STATE_ON:
+//                            Toast.makeText(context , "蓝牙已开启"  , Toast.LENGTH_SHORT).show();
+//                            break;
+//                    }
+//                    break;
+//            }
+        }
+    }
+
+    private void registerBluetoothReceiver(){
+        if(mReceive == null){
+            mReceive = new BluetoothStateBroadcastReceive();
+        }
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        intentFilter.addAction("android.bluetooth.BluetoothAdapter.STATE_OFF");
+        intentFilter.addAction("android.bluetooth.BluetoothAdapter.STATE_ON");
+        registerReceiver(mReceive, intentFilter);
+    }
+
+    private void unregisterBluetoothReceiver(){
+        if(mReceive != null){
+            unregisterReceiver(mReceive);
+            mReceive = null;
         }
     }
 }
