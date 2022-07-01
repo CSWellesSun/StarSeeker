@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AudioDeviceKitSample</string>
+    <string name="app_name"></string>
     <string name="current_device">当前设备：</string>
     <string name="connection_status">连接状态：</string>
     <string name="scan">查找</string>

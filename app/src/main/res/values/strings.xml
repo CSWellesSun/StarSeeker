@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AudioDeviceKit</string>
+    <string name="app_name">StarSeeker</string>
     <string name="current_device">Current Device: </string>
     <string name="connection_status">Connection Status: </string>
     <string name="scan">Scan Device</string>
