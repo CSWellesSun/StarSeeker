@@ -15,7 +15,7 @@ public interface BtContract {
          *
          * @param stateInfo 状态信息
          */
-        void onConnectStateChanged(String stateInfo);
+        void onConnectStateChanged(int stateInfo, String mac);
 
         void onDeviceFound(String mac);
 
@@ -28,6 +28,8 @@ public interface BtContract {
         void initBluetooth(Context context);
 
         void search();
+
+        void connect(String mac);
 
         void checkGlassConnect(Set<String> macs);
     }
