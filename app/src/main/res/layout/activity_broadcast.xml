@@ -64,10 +64,10 @@
             >\
 
             <Button
-                android:id="@+id/begin_button"
+                android:id="@+id/btn_pause"
                 android:layout_width="22dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="189dp"
+                android:layout_marginStart="170dp"
                 android:layout_marginTop="186dp"
                 android:background="@drawable/stop"
                 android:paddingLeft="10dp"
