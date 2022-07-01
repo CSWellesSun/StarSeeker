@@ -8,24 +8,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.huawei.audiodevicekit.Broadcast;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
-import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
-import com.huawei.audiobluetooth.utils.LogUtils;
+import com.huawei.audiobluetooth.api.AudioBluetoothApi;
 import com.huawei.audiodevicekit.R;
-import com.huawei.audiodevicekit.VoiceRecognition;
 import com.huawei.audiodevicekit.mvp.view.support.BaseAppCompatActivity;
 import com.huawei.audiodevicekit.starseeker.contract.BtContract;
 import com.huawei.audiodevicekit.starseeker.presenter.BtPresenter;
@@ -102,9 +96,7 @@ public class BtActivity
             for (String mac : deviceMacSet) {
                 for (String glassMac : glassMacSet) {
                     if (mac.equals(glassMac)) {
-                        mMac = mac;
-                        connectStatusFlag = true;
-                        runOnUiThread(() -> connectStatus.setText("已连接华为眼镜"));
+                        getPresenter().connect(mac);
                         return;
                     }
                 }
@@ -189,31 +181,43 @@ public class BtActivity
         btnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(BtActivity.this, Broadcast.class);
-                startActivity(intent);
+                if (connectStatusFlag == false) {
+                    Toast.makeText(getApplicationContext(), "当前未连接华为眼镜", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(BtActivity.this, Broadcast.class);
+                    intent.putExtra("Mac", mMac);
+                    startActivity(intent);
+                }
             }
         });
         // 对语音查找的监听
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(BtActivity.this, VoiceRecognition.class);
-                startActivity(intent);
+                if (connectStatusFlag == false) {
+                    Toast.makeText(getApplicationContext(), "当前未连接华为眼镜", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(BtActivity.this, VoiceRecognition.class);
+                    startActivity(intent);
+                }
             }
         });
     }
 
     // 从P来的回调函数
     @Override
-    public void onConnectStateChanged(String stateInfo) {
-        if (connectStatus != null) {
-            runOnUiThread(() -> connectStatus.setText(stateInfo));
+    public void onConnectStateChanged(int stateInfo, String mac) {
+        if (stateInfo == 3) {
+            mMac = mac;
+            connectStatusFlag = true;
+            runOnUiThread(() -> connectStatus.setText("已连接华为眼镜"));
+        } else {
+            CheckGlassConnection();
         }
     }
 
-    @Override
     public void onDeviceFound(String mac) {
         glassMacSet.add(mac);
     }
@@ -232,13 +236,13 @@ public class BtActivity
 
     @Override
     public void onCheckGlassConnect(String mac, boolean res) {
-        if (res) {
-            mMac = mac;
-            runOnUiThread(() -> connectStatus.setText("当前已连接华为眼镜"));
-            connectStatusFlag = true;
-        } else if (connectStatusFlag == false) {
-            runOnUiThread(() -> connectStatus.setText("当前未连接华为眼镜"));
-        }
+//        if (res) {
+//            mMac = mac;
+//            runOnUiThread(() -> connectStatus.setText("当前已连接华为眼镜"));
+//            connectStatusFlag = true;
+//        } else if (connectStatusFlag == false) {
+//            runOnUiThread(() -> connectStatus.setText("当前未连接华为眼镜"));
+//        }
     }
 
     // 蓝牙监听
@@ -247,27 +251,6 @@ public class BtActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             CheckGlassConnection();
-//            String action = intent.getAction();
-//            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//            switch (action){
-//                case BluetoothDevice.ACTION_ACL_CONNECTED:
-//                    Toast.makeText(context , "蓝牙设备:" + device.getName() + "已链接", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-//                    Toast.makeText(context , "蓝牙设备:" + device.getName() + "已断开", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case BluetoothAdapter.ACTION_STATE_CHANGED:
-//                    int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
-//                    switch (blueState){
-//                        case BluetoothAdapter.STATE_OFF:
-//                            Toast.makeText(context , "蓝牙已关闭", Toast.LENGTH_SHORT).show();
-//                            break;
-//                        case BluetoothAdapter.STATE_ON:
-//                            Toast.makeText(context , "蓝牙已开启"  , Toast.LENGTH_SHORT).show();
-//                            break;
-//                    }
-//                    break;
-//            }
         }
     }
 
@@ -289,5 +272,14 @@ public class BtActivity
             unregisterReceiver(mReceive);
             mReceive = null;
         }
+    }
+
+    /**
+     * Toast提示
+     *
+     * @param msg
+     */
+    private void showTip(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

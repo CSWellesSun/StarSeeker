@@ -1,4 +1,4 @@
-package com.huawei.audiodevicekit;
+package com.huawei.audiodevicekit.starseeker.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+import com.huawei.audiodevicekit.R;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

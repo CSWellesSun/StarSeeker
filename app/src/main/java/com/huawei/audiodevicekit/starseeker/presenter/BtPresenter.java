@@ -1,12 +1,15 @@
 package com.huawei.audiodevicekit.starseeker.presenter;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.huawei.audiobluetooth.constant.ConnectState;
 import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
 import com.huawei.audiobluetooth.utils.LogUtils;
+import com.huawei.audiodevicekit.R;
 import com.huawei.audiodevicekit.bluetoothsample.model.SampleBtModel;
 import com.huawei.audiodevicekit.bluetoothsample.model.SampleBtRepository;
 import com.huawei.audiodevicekit.mvp.impl.ABaseModelPresenter;
@@ -41,9 +44,16 @@ public class BtPresenter extends ABaseModelPresenter<BtContract.View, BtModel>
 
     @Override
     public void search() {
-        LogUtils.i(TAG, "initConnect");
+        LogUtils.i(TAG, "initSearch");
         if (!isUiDestroy()) {
             getModel().search();
+        }
+    }
+
+    @Override
+    public void connect(String mac) {
+        if (!isUiDestroy()) {
+            getModel().connect(mac);
         }
     }
 
@@ -69,5 +79,37 @@ public class BtPresenter extends ABaseModelPresenter<BtContract.View, BtModel>
         }
     }
 
-
+    @Override
+    public void onConnectStateChanged(BluetoothDevice device, int state) {
+        String stateInfo;
+        switch (state) {
+            case ConnectState.STATE_UNINITIALIZED:
+                stateInfo = getUi().getContext().getResources().getString(R.string.not_initialized);
+                break;
+            case ConnectState.STATE_CONNECTING:
+                stateInfo = getUi().getContext().getResources().getString(R.string.connecting);
+                break;
+            case ConnectState.STATE_CONNECTED:
+                stateInfo = getUi().getContext().getResources().getString(R.string.connected);
+                break;
+            case ConnectState.STATE_DATA_READY:
+                stateInfo = getUi().getContext().getResources().getString(R.string.data_channel_ready);
+//                registerListener(device.getAddress());
+                break;
+            case ConnectState.STATE_DISCONNECTED:
+                stateInfo = getUi().getContext().getResources().getString(R.string.disconnected);
+//                unregisterListener(device.getAddress());
+                break;
+            default:
+                stateInfo = getUi().getContext().getResources().getString(R.string.unknown) + state;
+                break;
+        }
+        LogUtils.i(TAG,
+                "onConnectStateChanged  state = " + state + "," + stateInfo + "," + ConnectState
+                        .toString(state));
+        if (!isUiDestroy()) {
+            getUi().onConnectStateChanged(state, device.getAddress());
+//            getUi().onDeviceChanged(device);
+        }
+    }
 }

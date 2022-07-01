@@ -64,6 +64,15 @@ public class BtRepository implements BtModel {
     }
 
     @Override
+    public void connect(String mac) {
+        AudioBluetoothApi.getInstance().connect(mac, state -> {
+            LogUtils.i(TAG, "onConnectStateChanged state = " + state);
+            BluetoothDevice device = BluetoothManager.getInstance().getBtDevice(mac);
+            mCallback.onConnectStateChanged(device, state);
+        });
+    }
+
+    @Override
     public void checkGlassConnect(Set<String> macs) {
         boolean flag = false;
         for (String mac : macs) {

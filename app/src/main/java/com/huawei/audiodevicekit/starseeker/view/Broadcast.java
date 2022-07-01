@@ -1,8 +1,13 @@
-package com.huawei.audiodevicekit;
+package com.huawei.audiodevicekit.starseeker.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.MemoryFile;
@@ -14,13 +19,27 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.AdapterListUpdateCallback;
 
+import com.huawei.audiobluetooth.api.AudioBluetoothApi;
+import com.huawei.audiobluetooth.api.Cmd;
+import com.huawei.audiobluetooth.api.data.SensorData;
+import com.huawei.audiobluetooth.api.data.SensorDataHelper;
+import com.huawei.audiobluetooth.layer.bluetooth.BluetoothManager;
+import com.huawei.audiobluetooth.layer.bluetooth.IInitResultCallBack;
+import com.huawei.audiobluetooth.layer.data.entity.IRspListener;
+import com.huawei.audiobluetooth.utils.LogUtils;
+import com.huawei.audiodevicekit.R;
+import com.huawei.audiodevicekit.mvp.utils.LifeCycleUtil;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -31,6 +50,9 @@ import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.msc.util.FileUtil;
 import com.iflytek.cloud.msc.util.log.DebugLog;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class Broadcast extends AppCompatActivity implements View.OnClickListener, Spinner.OnItemSelectedListener {
@@ -76,9 +98,42 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     //音量
     private String volumeValue = "50";
 
+    // 华为眼镜的MAC地址
+    private String mMac;
+    // 位置
+    private Location location = null;
+    // 时间
+    private String time;
+    // 搜索标志
+    private boolean searchFlag = false;
+    private ImageView findEndButton;
+    private TextView findEndText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 获得MAC地址
+        mMac = getIntent().getStringExtra("Mac");
+        AudioBluetoothApi.getInstance().init(this, new IInitResultCallBack() {
+            @Override
+            public void onResult(boolean result) {
+                LogUtils.i(TAG, "onResult result = " + result);
+                if (result == true) {
+                    AudioBluetoothApi.getInstance().connect(mMac, state -> {
+                        LogUtils.i(TAG, "onConnectStateChanged state = " + state);
+                        LogUtils.e(TAG, "state:" + state);
+                    });
+                } else {
+                    LogUtils.e(TAG, "寄");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtils.i(TAG, "onFinish");
+            }
+        });
+
         setContentView(R.layout.activity_broadcast);
 
         //初始化
@@ -94,6 +149,19 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
      * 初始化页面
      */
     private void initView() {
+        findEndButton = (ImageView) findViewById(R.id.find_this_star);
+        findEndText = (TextView) findViewById(R.id.find_end_text);
+        findEndButton.setOnClickListener(v -> {
+            if (searchFlag == false) {
+                searchFlag = true;
+                findEndText.setText("End Search");
+                FindStar();
+            } else {
+                searchFlag = false;
+                findEndText.setText("Find The Star");
+                EndSearch();
+            }
+        });
 //        etText = findViewById(R.id.et_text);
         findViewById(R.id.btn_broadcast).setOnClickListener(this);
 //        findViewById(R.id.btn_cancel).setOnClickListener(this);
@@ -199,6 +267,17 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 2://定位
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "同意获取定位权限", Toast.LENGTH_SHORT).show();
+                    getLocationLL();
+                } else {
+                    Toast.makeText(this, "未同意获取定位权限", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
     }
 
 
@@ -219,26 +298,26 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this,MainActivity2.class);
 //                startActivity(intent);
-            case R.id.btn_broadcast://开始合成
+//            case R.id.btn_broadcast://开始合成
                 //输入文本
 //                String etStr = etText.getText().toString().trim();
 //                if (!etStr.isEmpty()) {
 //                    text = etStr;
 //                }
                 //设置参数
-                setParam();
+//                setParam();
                 //开始合成播放
-                int code = mTts.startSpeaking(text, mTtsListener);
-                if (code != ErrorCode.SUCCESS) {
-                    showTip("语音合成失败,错误码: " + code);
-                }
-                break;
+//                int code = mTts.startSpeaking(text, mTtsListener);
+//                if (code != ErrorCode.SUCCESS) {
+//                    showTip("语音合成失败,错误码: " + code);
+//                }
+//                break;
 //            case R.id.btn_cancel://取消合成
 //                mTts.stopSpeaking();
 //                break;
-            case R.id.btn_pause://暂停播放
-                mTts.pauseSpeaking();
-                break;
+//            case R.id.btn_pause://暂停播放
+//                mTts.pauseSpeaking();
+//                break;
 //            case R.id.btn_resume://继续播放
 //                mTts.resumeSpeaking();
 //                break;
@@ -387,5 +466,120 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    /**
+     * 找星星主函数
+     */
+    public void FindStar() {
+        // 播报星星
+        int errorCode = Speak("您正在查找天秤座");
+        if (errorCode != ErrorCode.SUCCESS) return;
+        // 获得经纬度
+        getLocation();
+        if (location == null) return;
+        // 获得时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date date = new java.util.Date();
+        time = sdf.format(date);
+        // 获得陀螺仪和加速器的数据
+        AudioBluetoothApi.getInstance().registerListener(mMac, result -> {
+                LogUtils.i(TAG, "result = " + result);
+                byte[] appData = result.getAppData();
+                SensorData sensorData = SensorDataHelper.genSensorData(appData);
+            }
+        );
+        AudioBluetoothApi.getInstance().sendCmd(mMac, Cmd.SENSOR_DATA_UPLOAD_OPEN.getType(), new IRspListener<Object>() {
+            @Override
+            public void onSuccess(Object object) {
+                LogUtils.i(TAG, "onSuccess object = " + object);
+            }
+
+            @Override
+            public void onFailed(int errorCode) {
+                LogUtils.i(TAG, "onFailed errorCode = " + errorCode);
+            }
+        });
+    }
+
+    /**
+     * 工具函数：语音播报
+     * @param text
+     * @return errorCode
+     */
+    private int Speak(String text) {
+        // 设置参数
+        setParam();
+        // 开始合成播放
+        int code = mTts.startSpeaking(text, mTtsListener);
+        if (code != ErrorCode.SUCCESS) {
+            showTip("语音合成失败,错误码: " + code);
+        }
+        return code;
+    }
+
+    /**
+     * 定位：权限判断
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getLocation() {
+        //检查定位权限
+        ArrayList<String> permissions = new ArrayList<>();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        //判断
+        if (permissions.size() == 0) {//有权限，直接获取定位
+            getLocationLL();
+        } else {//没有权限，获取定位权限
+            requestPermissions(permissions.toArray(new String[permissions.size()]), 2);
+        }
+    }
+
+    private void getLocationLL() {
+        LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        location = null;
+        for (String provider : providers) {
+            @SuppressLint("MissingPermission") Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (location == null || l.getAccuracy() < location.getAccuracy()) {
+                location = l;
+            }
+        }
+        if (location != null) {
+            //日志
+            String locationStr = "维度：" + location.getLatitude() + " " + "经度：" + location.getLongitude() + " 海拔：" + location.getAltitude();
+            showTip(locationStr);
+        } else {
+            Toast.makeText(this, "位置信息获取失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EndSearch();
+    }
+
+    private void EndSearch() {
+        AudioBluetoothApi.getInstance().sendCmd(mMac, Cmd.SENSOR_DATA_UPLOAD_CLOSE.getType(), new IRspListener<Object>() {
+            @Override
+            public void onSuccess(Object object) {
+                LogUtils.i(TAG, "onSuccess object = " + object);
+            }
+
+            @Override
+            public void onFailed(int errorCode) {
+                LogUtils.i(TAG, "onFailed errorCode = " + errorCode);
+            }
+        });
+        AudioBluetoothApi.getInstance().unregisterListener(mMac);
     }
 }
