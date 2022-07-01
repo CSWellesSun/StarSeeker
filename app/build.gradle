@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.chaquo.python'
 
 android {
     compileSdkVersion 29
@@ -11,6 +12,17 @@ android {
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "com.huawei.audio.automatic.kit.AudioDeviceKitJunitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        python {
+            buildPython "C:\\Users\\Miller Yu\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"
+            pip {
+                install "astropy"
+                install "numpy"
+                install "imufusion"
+            }
+        }
     }
 
     repositories {
