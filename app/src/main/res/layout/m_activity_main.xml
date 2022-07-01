@@ -25,7 +25,7 @@
             android:layout_marginStart="72dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="60dp"
-            android:background="@drawable/new_button"
+            android:background="@drawable/new_button_selected"
             android:text="Find Star"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/star_info_button"
@@ -311,24 +311,24 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:src="@drawable/icon"></ImageView>
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:src="@drawable/file"></ImageView>
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:src="@drawable/earth"
             tools:layout_editor_absoluteX="81dp"
             tools:layout_editor_absoluteY="0dp"></ImageView>
@@ -337,8 +337,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:src="@drawable/avatar"
             tools:layout_editor_absoluteX="245dp"
             tools:layout_editor_absoluteY="0dp"></ImageView>
