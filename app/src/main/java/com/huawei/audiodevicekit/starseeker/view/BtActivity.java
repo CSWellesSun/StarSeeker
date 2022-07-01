@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,21 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
-import com.huawei.audiobluetooth.layer.protocol.mbb.DeviceInfo;
+import com.huawei.audiodevicekit.Broadcast;
 import com.huawei.audiodevicekit.R;
-import com.huawei.audiodevicekit.bluetoothsample.contract.SampleBtContract;
-import com.huawei.audiodevicekit.bluetoothsample.view.SampleBtActivity;
+import com.huawei.audiodevicekit.VoiceRecognition;
 import com.huawei.audiodevicekit.mvp.view.support.BaseAppCompatActivity;
 import com.huawei.audiodevicekit.starseeker.contract.BtContract;
 import com.huawei.audiodevicekit.starseeker.presenter.BtPresenter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class BtActivity
@@ -37,7 +31,7 @@ public class BtActivity
     implements BtContract.View {
     private ImageView btnConnect;
     private ImageView btnStar;
-    private Button btnSearch;
+    private ImageView btnSearch;
 
     private String mMac;
 
@@ -134,8 +128,8 @@ public class BtActivity
     protected void initView() {
         btnConnect = (ImageView) findViewById(R.id.glass_connect);
         connectStatus = (TextView) findViewById(R.id.m_connect_status);
-        btnStar =(ImageView)findViewById(R.id.recommend_1);
-        btnSearch =(Button) findViewById(R.id.find_star_button);
+        btnStar =(ImageView)findViewById(R.id.recommend_4);
+        btnSearch =(ImageView) findViewById(R.id.search_star);
         input = (EditText) findViewById(R.id.search_edit_text);
 
         deviceMacSet = new HashSet();
@@ -172,7 +166,7 @@ public class BtActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(BtActivity.this,com.huawei.audiodevicekit.MainActivity.class);
+                intent.setClass(BtActivity.this, Broadcast.class);
                 startActivity(intent);
             }
         });
@@ -181,7 +175,7 @@ public class BtActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(BtActivity.this,com.huawei.audiodevicekit.MainActivity2.class);
+                intent.setClass(BtActivity.this, VoiceRecognition.class);
                 startActivity(intent);
             }
         });
