@@ -16,7 +16,7 @@ import javax.security.auth.callback.Callback;
 
 public class SocketClient
 {
-    public String ipString = "192.168.217.30";   // 服务器端ip
+    public String ipString = "192.168.217.54";   // 服务器端ip
     public int port = 9999;                // 服务器端口
 
     public Socket socket;
@@ -78,7 +78,7 @@ public class SocketClient
                         int len = -1;
                         if (socket.isConnected() && (len = inputStream.read(buffer)) != -1)
                         {
-                            String data = new String(buffer, 0, len);
+                            String data = new String(buffer, 0, len - 1);
                             // 通过回调接口将获取到的数据推送出去
                             broadcast.call(data);
                         }
