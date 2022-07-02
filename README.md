@@ -55,11 +55,11 @@ Currently, users can't do any operations without Huawei Smart Glasses, but you c
 
 ## 分工情况
 
-cyp：nlp、语音识别、UI界面设计、声音播放、视频剪辑、展示部分ppt
+cyp：nlp、语音识别、UI界面设计、声音播放、视频剪辑、展示部分ppt (100%)
 
-sxj：socket编程、安卓前端实现、连接相关后端
+sxj：socket编程、安卓前端实现、连接相关后端 (100%)
 
-yfy：server端天文库与相关计算（astropy）、视角计算（imufusion）、展示部分ppt
+yfy：server端天文库与相关计算（astropy）、视角计算（imufusion）、展示部分ppt (100%)
 
 cjy: 全部的UI设计！
 
