@@ -260,19 +260,23 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.find_this_star:
                 mTts.pauseSpeaking();
-                LoginServer server = new LoginServer();
-                server.startNetThread();
-                n=10;
-                if(n>200){
-                    Speak("您已经找到了该星星");
+                n=200;
+                int flag=0;
+                if(n<40&&n>0){
+                    if(flag==1) Speak("您已经找到了该星星");
+                    else{
+                        flag=1;
+                    }
                 }
                 else{
-                    volumeValue=Math.round(n*1.0/255*100)+"0";
-                    pitchValue=Math.round(n*1.0/255*100)+"0";
-                    speedValue=Math.round(n*1.0/255*100)+"0";
+                    volumeValue=(255-n)*10+"";
+                    pitchValue=(255-n)*10+"";
+                    speedValue=(255-n)*10+"";
                     String text1 ="滴";
                     voicer = "aisjinger";
-
+                    Log.e("Send", volumeValue);
+                    Log.e("Send", pitchValue);
+                    Log.e("Send", pitchValue);
                     setParam();
                     //开始合成播放
                     code = mTts.startSpeaking(text1, mTtsListener);
