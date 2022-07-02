@@ -2,15 +2,20 @@ package com.huawei.audiodevicekit.starseeker.view;
 
 import android.util.Log;
 
+import com.huawei.audiodevicekit.starseeker.model.BtModel;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+
+import javax.security.auth.callback.Callback;
 
 public class SocketClient
 {
-    public String ipString = "192.168.217.30";   // 服务器端ip
+    public String ipString = "192.168.217.54";   // 服务器端ip
     public int port = 9999;                // 服务器端口
 
     public Socket socket;
@@ -51,46 +56,8 @@ public class SocketClient
         }
     }
 
-    /** 创建Socket并连接 */
-    public void start()
-    {
-        if (socket != null && socket.isConnected()) return;
-
-        Executors.newCachedThreadPool().execute(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                // Socket接收数据
-                try
-                {
-                    if (socket != null)
-                    {
-                        InputStream inputStream = socket.getInputStream();
-
-                        // 1024 * 1024 * 3 = 3145728
-                        byte[] buffer = new byte[3145728];		// 3M缓存
-                        int len = -1;
-                        while (socket.isConnected() && (len = inputStream.read(buffer)) != -1)
-                        {
-                            String data = new String(buffer, 0, len);
-
-                            // 通过回调接口将获取到的数据推送出去
-                            Log.e("Receiver", data);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    socket = null;
-                }
-            }
-        });
-
-    }
-
     /** 发送信息 */
-    public void Send(String data)
+    public void Send(String data, Broadcast broadcast)
     {
         Executors.newCachedThreadPool().execute(new Runnable()
         {
@@ -110,7 +77,7 @@ public class SocketClient
                         {
                             String data = new String(buffer, 0, len);
                             // 通过回调接口将获取到的数据推送出去
-                            Log.e("Receiver", data);
+                            broadcast.call(data);
                         }
                     }
                     else

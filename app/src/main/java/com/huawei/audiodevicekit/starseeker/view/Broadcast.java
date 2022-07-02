@@ -31,6 +31,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.AdapterListUpdateCallback;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.huawei.audiobluetooth.api.AudioBluetoothApi;
 import com.huawei.audiobluetooth.api.Cmd;
 import com.huawei.audiobluetooth.api.data.SensorData;
@@ -53,8 +56,10 @@ import com.iflytek.cloud.msc.util.log.DebugLog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.Callable;
 
 public class Broadcast extends AppCompatActivity implements View.OnClickListener, Spinner.OnItemSelectedListener {
 
@@ -474,12 +479,32 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
         // 获得陀螺仪和加速器的数据
         AudioBluetoothApi.getInstance().registerListener(mMac, result -> {
-                    LogUtils.i(TAG, "result = " + result);
-                    byte[] appData = result.getAppData();
-                    SensorData sensorData = SensorDataHelper.genSensorData(appData);
+            LogUtils.i(TAG, "result = " + result);
+            byte[] appData = result.getAppData();
+            SensorData sensorData = SensorDataHelper.genSensorData(appData);
+            // gyroData
+            Long[][] gyroData = new Long[25][3];
+            for (int i = 0; i < 25; i++) {
+                gyroData[i][0] = sensorData.gyroData[i].getRoll();
+                gyroData[i][1] = sensorData.gyroData[i].getPitch();
+                gyroData[i][2] = sensorData.gyroData[i].getYaw();
+            }
+            JSONArray gyroDataArray = (JSONArray) JSON.toJSON(gyroData);
+            // accelData
+            int[][] accelData = new int[25][3];
+            for (int i = 0; i < 25; i++) {
+                accelData[i][0] = sensorData.accelData[i].getX();
+                accelData[i][1] = sensorData.accelData[i].getY();
+                accelData[i][2] = sensorData.accelData[i].getZ();
+            }
+            JSONArray accelDataArray = (JSONArray) JSON.toJSON(accelData);
 
-                    socketClient.Send(sensorData.toString());
-                }
+            JSONObject data = new JSONObject();
+            data.put("time", time);
+            data.put("gyroData", gyroDataArray);
+            data.put("accelData", accelDataArray);
+            socketClient.Send(data.toString(), this);
+        }
         );
         AudioBluetoothApi.getInstance().sendCmd(mMac, Cmd.SENSOR_DATA_UPLOAD_OPEN.getType(), new IRspListener<Object>() {
             @Override
@@ -578,5 +603,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             }
         });
         AudioBluetoothApi.getInstance().unregisterListener(mMac);
+    }
+
+    public void call(String data) {
+        Log.e("CallBack: ", data);
     }
 }
