@@ -78,6 +78,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 
     private Vector<byte[]> container = new Vector<>();
 
+    public int code;
+    public double n;
+
     //内存文件
     MemoryFile memoryFile;
     //总大小
@@ -93,11 +96,11 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private ArrayAdapter<String> arrayAdapter;
 
     //语速
-    private String speedValue = "50";
+    public String speedValue = "50";
     //音调
-    private String pitchValue = "50";
+    public String pitchValue = "50";
     //音量
-    private String volumeValue = "50";
+    public String volumeValue = "50";
 
     // 华为眼镜的MAC地址
     private String mMac;
@@ -257,12 +260,35 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 mTts.pauseSpeaking();
                 LoginServer server = new LoginServer();
                 server.startNetThread();
+                n=10;
+                if(n>200){
+                    Speak("您已经找到了该星星");
+                }
+                else{
+                    volumeValue=Math.round(n*1.0/255*100)+"0";
+                    pitchValue=Math.round(n*1.0/255*100)+"0";
+                    speedValue=Math.round(n*1.0/255*100)+"0";
+                    String text1 ="滴";
+                    voicer = "aisjinger";
+
+                    setParam();
+                    //开始合成播放
+                    code = mTts.startSpeaking(text1, mTtsListener);
+                    if (code != ErrorCode.SUCCESS) {
+                        showTip("语音合成失败,错误码: " + code);
+                    }
+                }
+
                 break;
              case R.id.btn_read://开始合成
                  //设置参数
+                 volumeValue="50";
+                 pitchValue="50";
+                 speedValue="50";
+                 voicer = "aisjiuxu";
                  setParam();
                  //开始合成播放
-                 int code = mTts.startSpeaking(text, mTtsListener);
+                 code = mTts.startSpeaking(text, mTtsListener);
                  if (code != ErrorCode.SUCCESS) {
                      showTip("语音合成失败,错误码: " + code);
                  }
