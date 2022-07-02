@@ -72,16 +72,19 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private SpeechSynthesizer mTts;
 
     //播放的文字
-    String text = "我完全理解了";
+    String text = "天秤座，最佳观测时机为九月二十三日到十月二十三日。它是黄道十二星座的第七个，在室女座的东南方向。可见纬度为正六十五度和负九十度之间。";
 
     // 默认发音人
-    private String voicer = "xiaoyan";
+    private String voicer = "aisjiuxu";
 
     // 引擎类型
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
 
 
     private Vector<byte[]> container = new Vector<>();
+
+    public int code;
+    public double n;
 
     //内存文件
     MemoryFile memoryFile;
@@ -98,11 +101,11 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private ArrayAdapter<String> arrayAdapter;
 
     //语速
-    private String speedValue = "50";
+    public String speedValue = "50";
     //音调
-    private String pitchValue = "50";
+    public String pitchValue = "50";
     //音量
-    private String volumeValue = "50";
+    public String volumeValue = "50";
 
     // 华为眼镜的MAC地址
     private String mMac;
@@ -178,38 +181,9 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             }
         });
         findViewById(R.id.btn_read).setOnClickListener(this);
+        findViewById(R.id.find_this_star).setOnClickListener(this);
     }
 
-    //设置SeekBar
-    private void setSeekBar(SeekBar seekBar, final int type) {
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (type) {
-                    case 1://设置语速 范围 1~100
-                        speedValue = Integer.toString(progress);
-                        break;
-                    case 2://设置音调  范围 1~100
-                        pitchValue = Integer.toString(progress);
-                        break;
-                    case 3://设置音量  范围 1~100
-                        volumeValue = Integer.toString(progress);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-    }
 
     /**
      * 初始化监听。
@@ -289,29 +263,47 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
 
         switch (v.getId()) {
-            // case R.id.btn_read://开始合成
-            //输入文本
-//                String etStr = etText.getText().toString().trim();
-//                if (!etStr.isEmpty()) {
-//                    text = etStr;
-//                }
-            //设置参数
-//                setParam();
-            //开始合成播放
-//                int code = mTts.startSpeaking(text, mTtsListener);
-//                if (code != ErrorCode.SUCCESS) {
-//                    showTip("语音合成失败,错误码: " + code);
-//                }
-//                break;
-//            case R.id.btn_cancel://取消合成
-//                mTts.stopSpeaking();
-//                break;
-//            case R.id.btn_pause://暂停播放
-//                mTts.pauseSpeaking();
-//                break;
-//            case R.id.btn_resume://继续播放
-//                mTts.resumeSpeaking();
-//                break;
+            case R.id.find_this_star:
+                mTts.pauseSpeaking();
+                n=200;
+                int flag=0;
+                if(n<40&&n>0){
+                    if(flag==1) Speak("您已经找到了该星星");
+                    else{
+                        flag=1;
+                    }
+                }
+                else{
+                    volumeValue=(255-n)*10+"";
+                    pitchValue=(255-n)*10+"";
+                    speedValue=(255-n)*10+"";
+                    String text1 ="滴";
+                    voicer = "aisjinger";
+                    Log.e("Send", volumeValue);
+                    Log.e("Send", pitchValue);
+                    Log.e("Send", pitchValue);
+                    setParam();
+                    //开始合成播放
+                    code = mTts.startSpeaking(text1, mTtsListener);
+                    if (code != ErrorCode.SUCCESS) {
+                        showTip("语音合成失败,错误码: " + code);
+                    }
+                }
+
+                break;
+             case R.id.btn_read://开始合成
+                 //设置参数
+                 volumeValue="50";
+                 pitchValue="50";
+                 speedValue="50";
+                 voicer = "aisjiuxu";
+                 setParam();
+                 //开始合成播放
+                 code = mTts.startSpeaking(text, mTtsListener);
+                 if (code != ErrorCode.SUCCESS) {
+                     showTip("语音合成失败,错误码: " + code);
+                 }
+                 break;
             default:
                 break;
         }

@@ -30,13 +30,13 @@ public class VoiceRecognition extends AppCompatActivity implements EventListener
     protected ImageView jumpBtn;
 
     private EventManager asr;//语音识别核心库
-
+    private String mac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voicerecognition);
-
+        mac = getIntent().getStringExtra("Mac");
         initView();
         initPermission();
 
@@ -108,6 +108,7 @@ public class VoiceRecognition extends AppCompatActivity implements EventListener
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(VoiceRecognition.this, Broadcast.class);
+                intent.putExtra("Mac", mac);
                 startActivity(intent);
             }
         });
