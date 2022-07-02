@@ -49,4 +49,5 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.0'
     implementation project(path: ':core')
     implementation files('libs\\Msc.jar')
+    implementation files('libs\\fastjson-1.2.52.jar')
 }
