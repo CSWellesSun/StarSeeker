@@ -168,9 +168,10 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         findEndText = (TextView) findViewById(R.id.find_end_text);
         findEndButton.setOnClickListener(v -> {
             if (searchFlag == false) {
-                searchFlag = true;
-                findEndText.setText("End Search");
-                FindStar();
+                searchFlag = FindStar();
+                if (FindStar() == true) {
+                    findEndText.setText("End Search");
+                }
             } else {
                 searchFlag = false;
                 findEndText.setText("Find The Star");
@@ -221,7 +222,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             if (code != ErrorCode.SUCCESS) {
                 showTip("初始化失败,错误码：" + code);
             } else {
-                showTip("初始化成功");
+//                showTip("初始化成功");
             }
         }
     };
@@ -462,21 +463,28 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     /**
      * 找星星主函数
      */
-    public void FindStar() {
+    public boolean FindStar() {
         mTts.pauseSpeaking();
+        if (socketClient == null) {
+            try {
+                socketClient = new SocketClient();
+            } catch(Exception e) {
+            }
+        }
+        if (socketClient == null || socketClient.socket == null) {
+            showTip("服务器连接失败！");
+            return false;
+        }
         // 播报星星
         int errorCode = Speak("您正在查找天秤座");
-        if (errorCode != ErrorCode.SUCCESS) return;
+        if (errorCode != ErrorCode.SUCCESS) return false;
         // 获得经纬度
         getLocation();
-        if (location == null) return;
+        if (location == null) return false;
         // 获得时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.util.Date date = new java.util.Date();
         time = sdf.format(date);
-        if (socketClient == null) {
-            socketClient = new SocketClient();
-        }
         // 获得陀螺仪和加速器的数据
         AudioBluetoothApi.getInstance().registerListener(mMac, result -> {
             LogUtils.i(TAG, "result = " + result);
@@ -517,6 +525,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 LogUtils.i(TAG, "onFailed errorCode = " + errorCode);
             }
         });
+        return true;
     }
 
     /**
@@ -584,7 +593,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     public void onDestroy() {
         super.onDestroy();
         EndSearch();
-        if (socketClient != null) {
+        if (socketClient != null && socketClient.socket != null) {
             socketClient.disconnect();
             socketClient = null;
         }
