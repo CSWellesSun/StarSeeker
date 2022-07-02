@@ -66,7 +66,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private static final String TAG = "MainActivity";
 
     //输入框
-    private EditText etText;
+//    private EditText etText;
 
     // 语音合成对象
     private SpeechSynthesizer mTts;
@@ -117,6 +117,8 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private boolean searchFlag = false;
     private ImageView findEndButton;
     private TextView findEndText;
+    private int findFlag = 0;
+    private int lastNumber = -1;
 
     SocketClient socketClient = null;
 
@@ -182,7 +184,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             }
         });
         findViewById(R.id.btn_read).setOnClickListener(this);
-        findViewById(R.id.find_this_star).setOnClickListener(this);
+//        findViewById(R.id.find_this_star).setOnClickListener(this);
     }
 
 
@@ -264,34 +266,6 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
 
         switch (v.getId()) {
-            case R.id.find_this_star:
-                mTts.pauseSpeaking();
-                n=200;
-                int flag=0;
-                if(n<40&&n>0){
-                    if(flag==1) Speak("您已经找到了该星星");
-                    else{
-                        flag=1;
-                    }
-                }
-                else{
-                    volumeValue=(255-n)*10+"";
-                    pitchValue=(255-n)*10+"";
-                    speedValue=(255-n)*10+"";
-                    String text1 ="滴";
-                    voicer = "aisjinger";
-                    Log.e("Send", volumeValue);
-                    Log.e("Send", pitchValue);
-                    Log.e("Send", pitchValue);
-                    setParam();
-                    //开始合成播放
-                    code = mTts.startSpeaking(text1, mTtsListener);
-                    if (code != ErrorCode.SUCCESS) {
-                        showTip("语音合成失败,错误码: " + code);
-                    }
-                }
-
-                break;
              case R.id.btn_read://开始合成
                  //设置参数
                  volumeValue="50";
@@ -309,6 +283,42 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 break;
         }
 
+    }
+
+    private int CheckFind(int n) {
+        int flag = 0;
+        int threshold = 20;
+        if(n < threshold && n > 0 ) {
+            if(lastNumber < threshold && lastNumber > 0 ) {
+                findFlag += 1;
+            }
+            else {
+                findFlag = 1;
+            }
+            if (findFlag == 5) {
+                flag = 1; // 找到
+                Speak("您已经找到了该星星");
+            }
+        }
+        else{
+            volumeValue=(255-n)*10+"";
+            pitchValue=(255-n)*10+"";
+            speedValue=(255-n)*10+"";
+            String text1 ="滴";
+            voicer = "aisjinger";
+            Log.e("Send", volumeValue);
+            Log.e("Send", pitchValue);
+            Log.e("Send", pitchValue);
+            setParam();
+            //开始合成播放
+            mTts.pauseSpeaking();
+            code = mTts.startSpeaking(text1, mTtsListener);
+            if (code != ErrorCode.SUCCESS) {
+                showTip("语音合成失败,错误码: " + code);
+            }
+        }
+        lastNumber = n;
+        return flag;
     }
 
     /**
@@ -376,10 +386,10 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         @Override
         public void onSpeakProgress(int percent, int beginPos, int endPos) {
             // 播放进度
-            Log.i(TAG, "播放进度：" + percent + "%");
-            SpannableStringBuilder style = new SpannableStringBuilder(text);
-            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            etText.setText(style);
+//            Log.i(TAG, "播放进度：" + percent + "%");
+//            SpannableStringBuilder style = new SpannableStringBuilder(text);
+//            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            etText.setText(style);
         }
 
         //播放完成
@@ -464,12 +474,17 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             }
         }
         if (socketClient == null || socketClient.socket == null) {
-            showTip("服务器连接失败！");
+            showTip("服务器连接失败！服务器地址：" + socketClient.ipString + ":" + socketClient.port);
             return false;
         }
         // 播报星星
         int errorCode = Speak("您正在查找天秤座");
         if (errorCode != ErrorCode.SUCCESS) return false;
+        try {
+            java.lang.Thread.sleep(1000);
+        } catch (Exception e) {
+            return false;
+        }
         // 获得经纬度
         getLocation();
         if (location == null) return false;
@@ -517,6 +532,8 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 LogUtils.i(TAG, "onFailed errorCode = " + errorCode);
             }
         });
+        findFlag = 0;
+        lastNumber = -1;
         return true;
     }
 
@@ -527,6 +544,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
      * @return errorCode
      */
     private int Speak(String text) {
+        mTts.pauseSpeaking();
         // 设置参数
         setParam();
         // 开始合成播放
@@ -607,6 +625,18 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     }
 
     public void call(String data) {
-        Log.e("CallBack: ", data);
+        Log.e("1", data);
+        int res;
+        try {
+            res = Integer.parseInt(data);
+        } catch (Exception e) {
+            return;
+        }
+        int flag = CheckFind(res);
+        if (flag == 1) {
+            searchFlag = false;
+            runOnUiThread(() -> findEndText.setText("Successfully Find!"));
+            EndSearch();
+        }
     }
 }
