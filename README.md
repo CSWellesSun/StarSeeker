@@ -2,7 +2,7 @@
 
 ## Logo
 
-<img src="app\src\main\res\mipmap-xxhdpi\logo.png" alt="logo" style="zoom: 25%;" />
+<img src="app\src\main\res\mipmap-xxhdpi\logo.png" alt="logo" style="zoom: 5%;" />
 
 ## Abstract
 
