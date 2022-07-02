@@ -67,10 +67,10 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private SpeechSynthesizer mTts;
 
     //播放的文字
-    String text = "我完全理解了";
+    String text = "天秤座，最佳观测时机为九月二十三日到十月二十三日。它是黄道十二星座的第七个，在室女座的东南方向。可见纬度为正六十五度和负九十度之间。";
 
     // 默认发音人
-    private String voicer = "xiaoyan";
+    private String voicer = "aisjiuxu";
 
     // 引擎类型
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
@@ -170,59 +170,10 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 EndSearch();
             }
         });
-//        etText = findViewById(R.id.et_text);
         findViewById(R.id.btn_read).setOnClickListener(this);
-//        findViewById(R.id.btn_cancel).setOnClickListener(this);
         findViewById(R.id.find_this_star).setOnClickListener(this);
-//        findViewById(R.id.btn_resume).setOnClickListener(this);
-//        findViewById(R.id.btn_jump).setOnClickListener(this);
-//        Spinner spinner = findViewById(R.id.spinner);
-//
-//        SeekBar sbSpeed = findViewById(R.id.sb_speed);
-//        SeekBar sbPitch = findViewById(R.id.sb_pitch);
-//        SeekBar sbVolume = findViewById(R.id.sb_volume);
-//
-//        //将可选内容与ArrayAdapter连接起来
-////        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayName);
-//        //设置下拉列表的风格
-////        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        //将adapter 添加到spinner中
-//        spinner.setAdapter(arrayAdapter);
-//        //添加事件Spinner事件监听
-//        spinner.setOnItemSelectedListener(this);
-//
-//        setSeekBar(sbSpeed, 1);
-//        setSeekBar(sbPitch, 2);
-//        setSeekBar(sbVolume, 3);
     }
 
-    //设置SeekBar
-    private void setSeekBar(SeekBar seekBar, final int type) {
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (type) {
-                    case 1://设置语速 范围 1~100
-                        speedValue = Integer.toString(progress);
-                        break;
-                    case 2://设置音调  范围 1~100
-                        pitchValue = Integer.toString(progress);
-                        break;
-                    case 3://设置音量  范围 1~100
-                        volumeValue = Integer.toString(progress);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
-        });
-    }
 
     /**
      * 初始化监听。
@@ -306,37 +257,16 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 mTts.pauseSpeaking();
                 LoginServer server = new LoginServer();
                 server.startNetThread();
-//                server.doPostOrGet("1","1","1","1","1");
-//                server.loginByGet("1","1","1","1","1");
-
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this,MainActivity2.class);
-//                startActivity(intent);
-
                 break;
-            // case R.id.btn_read://开始合成
-                //输入文本
-//                String etStr = etText.getText().toString().trim();
-//                if (!etStr.isEmpty()) {
-//                    text = etStr;
-//                }
-                //设置参数
-//                setParam();
-                //开始合成播放
-//                int code = mTts.startSpeaking(text, mTtsListener);
-//                if (code != ErrorCode.SUCCESS) {
-//                    showTip("语音合成失败,错误码: " + code);
-//                }
-//                break;
-//            case R.id.btn_cancel://取消合成
-//                mTts.stopSpeaking();
-//                break;
-//            case R.id.btn_pause://暂停播放
-//                mTts.pauseSpeaking();
-//                break;
-//            case R.id.btn_resume://继续播放
-//                mTts.resumeSpeaking();
-//                break;
+             case R.id.btn_read://开始合成
+                 //设置参数
+                 setParam();
+                 //开始合成播放
+                 int code = mTts.startSpeaking(text, mTtsListener);
+                 if (code != ErrorCode.SUCCESS) {
+                     showTip("语音合成失败,错误码: " + code);
+                 }
+                 break;
             default:
                 break;
         }
