@@ -110,6 +110,8 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     private ImageView findEndButton;
     private TextView findEndText;
 
+    SocketClient socketClient = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,30 +172,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
                 EndSearch();
             }
         });
-//        etText = findViewById(R.id.et_text);
         findViewById(R.id.btn_read).setOnClickListener(this);
-//        findViewById(R.id.btn_cancel).setOnClickListener(this);
-        findViewById(R.id.find_this_star).setOnClickListener(this);
-//        findViewById(R.id.btn_resume).setOnClickListener(this);
-//        findViewById(R.id.btn_jump).setOnClickListener(this);
-//        Spinner spinner = findViewById(R.id.spinner);
-//
-//        SeekBar sbSpeed = findViewById(R.id.sb_speed);
-//        SeekBar sbPitch = findViewById(R.id.sb_pitch);
-//        SeekBar sbVolume = findViewById(R.id.sb_volume);
-//
-//        //将可选内容与ArrayAdapter连接起来
-////        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayName);
-//        //设置下拉列表的风格
-////        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        //将adapter 添加到spinner中
-//        spinner.setAdapter(arrayAdapter);
-//        //添加事件Spinner事件监听
-//        spinner.setOnItemSelectedListener(this);
-//
-//        setSeekBar(sbSpeed, 1);
-//        setSeekBar(sbPitch, 2);
-//        setSeekBar(sbVolume, 3);
     }
 
     //设置SeekBar
@@ -218,9 +197,12 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
     }
 
@@ -302,27 +284,15 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         }
 
         switch (v.getId()) {
-            case R.id.find_this_star:
-                mTts.pauseSpeaking();
-                LoginServer server = new LoginServer();
-                server.startNetThread();
-//                server.doPostOrGet("1","1","1","1","1");
-//                server.loginByGet("1","1","1","1","1");
-
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this,MainActivity2.class);
-//                startActivity(intent);
-
-                break;
             // case R.id.btn_read://开始合成
-                //输入文本
+            //输入文本
 //                String etStr = etText.getText().toString().trim();
 //                if (!etStr.isEmpty()) {
 //                    text = etStr;
 //                }
-                //设置参数
+            //设置参数
 //                setParam();
-                //开始合成播放
+            //开始合成播放
 //                int code = mTts.startSpeaking(text, mTtsListener);
 //                if (code != ErrorCode.SUCCESS) {
 //                    showTip("语音合成失败,错误码: " + code);
@@ -488,6 +458,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
      * 找星星主函数
      */
     public void FindStar() {
+        mTts.pauseSpeaking();
         // 播报星星
         int errorCode = Speak("您正在查找天秤座");
         if (errorCode != ErrorCode.SUCCESS) return;
@@ -498,12 +469,17 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.util.Date date = new java.util.Date();
         time = sdf.format(date);
+        if (socketClient == null) {
+            socketClient = new SocketClient();
+        }
         // 获得陀螺仪和加速器的数据
         AudioBluetoothApi.getInstance().registerListener(mMac, result -> {
-                LogUtils.i(TAG, "result = " + result);
-                byte[] appData = result.getAppData();
-                SensorData sensorData = SensorDataHelper.genSensorData(appData);
-            }
+                    LogUtils.i(TAG, "result = " + result);
+                    byte[] appData = result.getAppData();
+                    SensorData sensorData = SensorDataHelper.genSensorData(appData);
+
+                    socketClient.Send(sensorData.toString());
+                }
         );
         AudioBluetoothApi.getInstance().sendCmd(mMac, Cmd.SENSOR_DATA_UPLOAD_OPEN.getType(), new IRspListener<Object>() {
             @Override
@@ -520,6 +496,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 
     /**
      * 工具函数：语音播报
+     *
      * @param text
      * @return errorCode
      */
@@ -582,6 +559,10 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
     public void onDestroy() {
         super.onDestroy();
         EndSearch();
+        if (socketClient != null) {
+            socketClient.disconnect();
+            socketClient = null;
+        }
     }
 
     private void EndSearch() {
