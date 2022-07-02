@@ -55,39 +55,30 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_marginStart="56dp"
-            android:layout_marginEnd="56dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/find_star_button"
             >\
 
-            <Button
-                android:id="@+id/btn_pause"
-                android:layout_width="22dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="170dp"
-                android:layout_marginTop="186dp"
-                android:background="@drawable/stop"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></Button>
 
             <ImageView
                 android:id="@+id/btn_broadcast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:scaleX="1.0"
-                android:scaleY="1.0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/picture" />
+
+            <ImageView
+                android:id="@+id/btn_read"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toTopOf="@+id/find_this_star"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
 
             <ImageView
                 android:id="@+id/find_this_star"
