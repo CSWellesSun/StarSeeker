@@ -61,6 +61,8 @@ sxj：socket编程、安卓前端实现、连接相关后端
 
 yfy：server端天文库与相关计算（astropy）、视角计算（imufusion）、展示部分ppt
 
+cjy: 全部的UI设计！
+
 ## Video
 
 https://www.bilibili.com/video/BV1Gf4y1Z7Bg
