@@ -175,8 +175,18 @@ public class BtActivity
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                Toast.makeText(getApplicationContext(),"输入的为:"+input.getText().toString(),Toast.LENGTH_LONG).show();
-                return false;}});
+                if (connectStatusFlag == false) {
+                    Toast.makeText(getApplicationContext(), "当前未连接华为眼镜", Toast.LENGTH_SHORT).show();
+                    return false;
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(BtActivity.this, Broadcast.class);
+                    intent.putExtra("Mac", mMac);
+                    startActivity(intent);
+                    return false;
+                }
+            }
+        });
         // 对北极星语音播报的监听
         btnStar.setOnClickListener(new View.OnClickListener() {
             @Override
