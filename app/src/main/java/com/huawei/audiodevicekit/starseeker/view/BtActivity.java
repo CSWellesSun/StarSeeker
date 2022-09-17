@@ -1,14 +1,20 @@
 package com.huawei.audiodevicekit.starseeker.view;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
+import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.huawei.audiobluetooth.api.AudioBluetoothApi;
@@ -30,8 +37,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BtActivity
-    extends BaseAppCompatActivity<BtContract.Presenter, BtContract.View>
-    implements BtContract.View {
+        extends BaseAppCompatActivity<BtContract.Presenter, BtContract.View>
+        implements BtContract.View {
     private ImageView btnStar;
     private ImageView btnSearch;
 
@@ -60,10 +67,14 @@ public class BtActivity
     private int LOCATION_PERMISSION_REQUEST_CODE = 188;
 
     @Override
-    public Context getContext() { return this; }
+    public Context getContext() {
+        return this;
+    }
 
     @Override
-    public BtContract.Presenter createPresenter() { return new BtPresenter(); }
+    public BtContract.Presenter createPresenter() {
+        return new BtPresenter();
+    }
 
     @Override
     public BtContract.View getUiImplement() {
@@ -74,6 +85,7 @@ public class BtActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        setCustomDensity(this, getApplication());
         CheckGlassConnection();
         registerBluetoothReceiver();
     }
@@ -150,8 +162,8 @@ public class BtActivity
     @Override
     protected void initView() {
         connectStatus = (TextView) findViewById(R.id.m_connect_status);
-        btnStar =(ImageView)findViewById(R.id.recommend_4);
-        btnSearch =(ImageView) findViewById(R.id.search_star);
+        btnStar = (ImageView) findViewById(R.id.recommend_4);
+        btnSearch = (ImageView) findViewById(R.id.search_star);
         input = (EditText) findViewById(R.id.search_edit_text);
 
         deviceMacSet = new HashSet();
@@ -264,8 +276,8 @@ public class BtActivity
         }
     }
 
-    private void registerBluetoothReceiver(){
-        if(mReceive == null){
+    private void registerBluetoothReceiver() {
+        if (mReceive == null) {
             mReceive = new BluetoothStateBroadcastReceive();
         }
         IntentFilter intentFilter = new IntentFilter();
@@ -277,8 +289,8 @@ public class BtActivity
         registerReceiver(mReceive, intentFilter);
     }
 
-    private void unregisterBluetoothReceiver(){
-        if(mReceive != null){
+    private void unregisterBluetoothReceiver() {
+        if (mReceive != null) {
             unregisterReceiver(mReceive);
             mReceive = null;
         }
@@ -291,5 +303,45 @@ public class BtActivity
      */
     private void showTip(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 分辨率适配相关的变量和函数
+     */
+    private static float sNoncompatDensity;
+    private static float sNoncompatScaledDensity;
+
+    private static void setCustomDensity(@NonNull Activity activity, @NonNull final Application application) {
+        final DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
+
+        if (sNoncompatDensity == 0) {
+            sNoncompatDensity = appDisplayMetrics.density;
+            sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
+            application.registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(@NonNull Configuration newConfig) {
+                    if (newConfig != null && newConfig.fontScale > 0) {
+                        sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {
+                }
+            });
+        }
+
+        final float targetDensity = appDisplayMetrics.widthPixels / 360; // Assume density is 360dp
+        final float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
+        final int targetDensityDpi = (int) (160 * targetDensity);
+
+        appDisplayMetrics.density = targetDensity;
+        appDisplayMetrics.scaledDensity = targetScaledDensity;
+        appDisplayMetrics.densityDpi = targetDensityDpi;
+
+        final DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
+        activityDisplayMetrics.density = targetDensity;
+        activityDisplayMetrics.scaledDensity = targetScaledDensity;
+        activityDisplayMetrics.densityDpi = targetDensityDpi;
     }
 }

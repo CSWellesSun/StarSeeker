@@ -1,14 +1,16 @@
 package com.baidu.aip.asrwakeup3.core.recog;
 
 import android.content.Context;
+
+import com.baidu.aip.asrwakeup3.core.recog.listener.IRecogListener;
+import com.baidu.aip.asrwakeup3.core.recog.listener.RecogEventAdapter;
 import com.baidu.aip.asrwakeup3.core.util.MyLogger;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+
 import org.json.JSONObject;
-import com.baidu.aip.asrwakeup3.core.recog.listener.IRecogListener;
-import com.baidu.aip.asrwakeup3.core.recog.listener.RecogEventAdapter;
 
 import java.util.Map;
 

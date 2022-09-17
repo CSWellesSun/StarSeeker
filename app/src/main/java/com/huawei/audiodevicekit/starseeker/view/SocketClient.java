@@ -16,7 +16,7 @@ import javax.security.auth.callback.Callback;
 
 public class SocketClient
 {
-    public String ipString = "192.168.217.54";   // 服务器端ip
+    public String ipString = "192.168.217.30";   // 服务器端ip
     public int port = 9999;                // 服务器端口
 
     public Socket socket;

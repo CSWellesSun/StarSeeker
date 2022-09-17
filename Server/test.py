@@ -70,7 +70,7 @@ def get_diff_level(opt_altaz, gyro, acc, ahrs=imufusion.Ahrs()):
 
 #创建一个socket对象
 socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = "192.168.217.54"
+host = "192.168.217.30"
 port = 9999
 #绑定地址
 socket_server.bind((host, port))

@@ -7,10 +7,11 @@
     android:orientation="vertical"
     android:background="@drawable/background"
     tools:context=".starseeker.view.Broadcast">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/main_screen"
         android:layout_width="0dp"
-        android:layout_height="630dp"
+        android:layout_height="750dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,45 +21,43 @@
 
         <Button
             android:id="@+id/find_star_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="144dp"
+            android:layout_height="28dp"
             android:layout_marginStart="72dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="60dp"
-            android:background="@drawable/new_button"
+            android:layout_marginTop="63dp"
+            android:background="@drawable/new_button_selected"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Find Star"
-            android:textSize="20sp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:layout_constraintEnd_toStartOf="@+id/star_info_button"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/star_info_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></Button>
 
         <Button
             android:id="@+id/star_info_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="36dp"
+            android:layout_width="144dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="63dp"
             android:layout_marginEnd="72dp"
-            android:layout_weight="1"
-            android:background="@drawable/new_button_selected"
+            android:background="@drawable/new_button"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Star Info"
-            android:textSize="20sp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/find_star_button"
+            app:layout_constraintStart_toEndOf="@id/find_star_button"
             app:layout_constraintTop_toTopOf="parent"></Button>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="167dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/find_star_button"
+            app:layout_constraintTop_toTopOf="parent"
             >\
 
 
@@ -117,52 +116,62 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/tabbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="0dp"
         android:layout_width="0dp"
-        android:layout_height="100dp"
         android:background="#564180"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_screen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
         <ImageView
-            android:layout_width="0dp"
+            android:id="@+id/touchbar_first_icon"
+            android:layout_width="98.25dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
-            android:src="@drawable/icon"></ImageView>
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            android:src="@drawable/icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/touchbar_second_icon"
+            ></ImageView>
 
         <ImageView
-            android:layout_width="0dp"
+            android:id="@+id/touchbar_second_icon"
+            android:layout_width="98.25dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
-            android:src="@drawable/file"></ImageView>
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            android:src="@drawable/file"
+            app:layout_constraintStart_toEndOf="@id/touchbar_first_icon"
+            app:layout_constraintEnd_toStartOf="@id/touchbar_third_icon"
+            ></ImageView>
 
         <ImageView
-            android:layout_width="0dp"
+            android:id="@+id/touchbar_third_icon"
+            android:layout_width="98.25dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
             android:src="@drawable/earth"
-            tools:layout_editor_absoluteX="81dp"
-            tools:layout_editor_absoluteY="0dp"></ImageView>
+            app:layout_constraintStart_toEndOf="@id/touchbar_second_icon"
+            app:layout_constraintEnd_toStartOf="@id/touchbar_four_icon"
+            ></ImageView>
 
         <ImageView
-            android:layout_width="0dp"
+            android:id="@+id/touchbar_four_icon"
+            android:layout_width="98.25dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
             android:src="@drawable/avatar"
-            tools:layout_editor_absoluteX="245dp"
-            tools:layout_editor_absoluteY="0dp"></ImageView>
+            app:layout_constraintStart_toEndOf="@id/touchbar_third_icon"
+            ></ImageView>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

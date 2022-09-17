@@ -287,7 +287,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
 
     private int CheckFind(int n) {
         int flag = 0;
-        int threshold = 20;
+        int threshold = 40;
         if(n < threshold && n > 0 ) {
             if(lastNumber < threshold && lastNumber > 0 ) {
                 findFlag += 1;
@@ -295,7 +295,7 @@ public class Broadcast extends AppCompatActivity implements View.OnClickListener
             else {
                 findFlag = 1;
             }
-            if (findFlag == 5) {
+            if (findFlag == 3) {
                 flag = 1; // 找到
                 Speak("您已经找到了该星星");
             }
